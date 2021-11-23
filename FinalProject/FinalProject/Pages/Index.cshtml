@@ -1,10 +1,37 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Channel page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>Channel</h1>
+
+@if (Model.IsAdmin)
+{
+    <p>
+        <a asp-page="AddPost">Add New Channel</a>
+        <hr>
+        <br>
+    </p>
+}
+
+    @foreach (var item in Model.Channels)
+    {
+
+        <div class="col-md-8">
+            <h2>
+                <a asp-page="./Details" asp-route-slug="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
+            </h2>
+
+        </div>
+
+
+        @if (Model.IsAdmin)
+        {
+            <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a>
+            <span> | </span>
+            <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+
+        }
+        <hr>
+    }

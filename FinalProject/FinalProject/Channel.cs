@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
-namespace FinalProject.Data
+namespace FinalProject
 {
     public class Channel
     {

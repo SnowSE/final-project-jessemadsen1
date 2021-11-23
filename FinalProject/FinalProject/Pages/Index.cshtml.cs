@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -10,16 +12,26 @@ namespace FinalProject.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly FinalProject.Data.ApplicationDbContext _dbContext;
+        private readonly IAuthorizationService authorizationService;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(FinalProject.Data.ApplicationDbContext dbContext, IAuthorizationService authorizationService)
         {
-            _logger = logger;
+            _dbContext = dbContext;
+            this.authorizationService = authorizationService;
         }
+        public IList<Channel> Channels { get; set; }
+        public bool CanEdit { get; private set; }
+        public bool IsAdmin { get; private set; }
 
-        public void OnGet()
+
+
+        public async Task OnGetAsync()
         {
+            Channels = await _dbContext.Channels.ToListAsync();
 
+            var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
+            IsAdmin = authResult.Succeeded;
         }
     }
 }

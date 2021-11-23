@@ -19,7 +19,7 @@ namespace FinalProject.Migrations
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("FinalProject.Data.Channel", b =>
+            modelBuilder.Entity("FinalProject.Channel", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -36,10 +36,10 @@ namespace FinalProject.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Channel");
+                    b.ToTable("Channels");
                 });
 
-            modelBuilder.Entity("FinalProject.Data.Comment", b =>
+            modelBuilder.Entity("FinalProject.Comment", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -70,7 +70,7 @@ namespace FinalProject.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("FinalProject.Data.SubComment", b =>
+            modelBuilder.Entity("FinalProject.SubComment", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -101,7 +101,7 @@ namespace FinalProject.Migrations
                     b.ToTable("SubComments");
                 });
 
-            modelBuilder.Entity("FinalProject.Data.Topic", b =>
+            modelBuilder.Entity("FinalProject.Topic", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -332,9 +332,9 @@ namespace FinalProject.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("FinalProject.Data.Comment", b =>
+            modelBuilder.Entity("FinalProject.Comment", b =>
                 {
-                    b.HasOne("FinalProject.Data.Topic", "Topic")
+                    b.HasOne("FinalProject.Topic", "Topic")
                         .WithMany("Comments")
                         .HasForeignKey("TopicId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -343,9 +343,9 @@ namespace FinalProject.Migrations
                     b.Navigation("Topic");
                 });
 
-            modelBuilder.Entity("FinalProject.Data.SubComment", b =>
+            modelBuilder.Entity("FinalProject.SubComment", b =>
                 {
-                    b.HasOne("FinalProject.Data.Comment", "Comment")
+                    b.HasOne("FinalProject.Comment", "Comment")
                         .WithMany("SubComments")
                         .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -354,9 +354,9 @@ namespace FinalProject.Migrations
                     b.Navigation("Comment");
                 });
 
-            modelBuilder.Entity("FinalProject.Data.Topic", b =>
+            modelBuilder.Entity("FinalProject.Topic", b =>
                 {
-                    b.HasOne("FinalProject.Data.Channel", null)
+                    b.HasOne("FinalProject.Channel", null)
                         .WithMany("Topics")
                         .HasForeignKey("ChannelID");
                 });
@@ -412,17 +412,17 @@ namespace FinalProject.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FinalProject.Data.Channel", b =>
+            modelBuilder.Entity("FinalProject.Channel", b =>
                 {
                     b.Navigation("Topics");
                 });
 
-            modelBuilder.Entity("FinalProject.Data.Comment", b =>
+            modelBuilder.Entity("FinalProject.Comment", b =>
                 {
                     b.Navigation("SubComments");
                 });
 
-            modelBuilder.Entity("FinalProject.Data.Topic", b =>
+            modelBuilder.Entity("FinalProject.Topic", b =>
                 {
                     b.Navigation("Comments");
                 });
