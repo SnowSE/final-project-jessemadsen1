@@ -69,9 +69,9 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
-@import "../lib/bootswatch/dist/darkly/_variables.scss";
+@import "../lib/bootswatch/dist/vapor/_variables.scss";
 @import "../lib/bootstrap/scss/bootstrap.scss";
-@import "../lib/bootswatch/dist/darkly/_bootswatch.scss";
+@import "../lib/bootswatch/dist/vapor/_bootswatch.scss";
 
 .input-validation-error {
     @extend .is-invalid;
