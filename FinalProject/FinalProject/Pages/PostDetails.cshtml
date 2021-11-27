@@ -1,4 +1,4 @@
-﻿@page "/{slug}"
+﻿@page 
 @model PostDetailsModel
 @{
     ViewData["Title"] = "Posts page";
@@ -16,12 +16,25 @@
 @foreach (var item in Model.Posts)
 {
 
-    <br>
-    <h2>
-        @Html.DisplayFor(modelItem => item.Title)
-    </h2>
+    <div class="col-md-8">
+        <h2>
+            <a asp-page="./Details" asp-route-slug="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
+        </h2>
 
-    <p><em>@Html.DisplayFor(modelItem => item.Body)</em></p>
-   
+    </div>
+
+
+    @if (Model.IsAdmin)
+    {
+        <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a>
+        <span> | </span>
+        <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
 
     }
+    <hr>
+
+
+}
+
+
+

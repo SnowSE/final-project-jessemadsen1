@@ -68,32 +68,7 @@ namespace FinalProject.Pages
 
                 return RedirectToPage(new { slug = slug });
             }
-            public async Task<IActionResult> OnPostHideCommentAsync(int commentid, string slug)
-            {
-                var comment = await _dbContext.Comments.FindAsync(commentid);
 
-                if (comment != null)
-                {
-                    comment.HideComment = true;
-                    await _dbContext.SaveChangesAsync();
-                }
-                return RedirectToPage(new { slug = slug });
-            }
-            public async Task<IActionResult> OnPostDeleteCommentAsync(int commentid)
-            {
-                var comment = await _dbContext.Comments.FindAsync(commentid);
-                return RedirectToPage("./DeleteComment", new { id = commentid });
-            }
-
-            public async Task<IActionResult> OnPostEditCommentAsync(int commentid)
-            {
-                var comment = await _dbContext.Comments.FindAsync(commentid);
-                return RedirectToPage("./EditComment", new { id = commentid });
-            }
-            private bool PostExists(int id)
-            {
-                return _dbContext.Posts.Any(e => e.ID == id);
-            }
         }
     
 }
