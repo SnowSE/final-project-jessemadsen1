@@ -63,6 +63,9 @@ namespace FinalProject.Migrations
                     b.Property<DateTime>("PostedOn")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<int>("Vote")
+                        .HasColumnType("integer");
+
                     b.HasKey("ID");
 
                     b.HasIndex("PostId");
@@ -97,6 +100,9 @@ namespace FinalProject.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<int>("TopicId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Vote")
                         .HasColumnType("integer");
 
                     b.HasKey("ID");

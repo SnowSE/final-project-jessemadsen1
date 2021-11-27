@@ -20,7 +20,7 @@ namespace FinalProject.Pages
 
         public IActionResult OnGet()
         {
-            ViewData["ChannelId"] = new SelectList(dbContext.Channels, "ID", "Title");
+            ViewData["ChannelID"] = new SelectList(dbContext.Channels, "ID", "Title");
             return Page();
         }
 

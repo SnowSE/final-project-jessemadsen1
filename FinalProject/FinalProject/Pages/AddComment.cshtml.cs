@@ -21,7 +21,7 @@ namespace FinalProject.Pages
 
         public IActionResult OnGet()
         {
-            ViewData["BlogPostId"] = new SelectList(_context.Posts, "ID", "Title");
+            ViewData["PostId"] = new SelectList(_context.Posts, "ID", "Title");
             return Page();
         }
 

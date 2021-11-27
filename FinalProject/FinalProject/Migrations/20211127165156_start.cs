@@ -175,17 +175,17 @@ namespace FinalProject.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Slug = table.Column<string>(type: "text", nullable: true),
-                    ChannelID = table.Column<int>(type: "integer", nullable: true)
+                    ChannelId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Topics", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Topics_Channels_ChannelID",
-                        column: x => x.ChannelID,
+                        name: "FK_Topics_Channels_ChannelId",
+                        column: x => x.ChannelId,
                         principalTable: "Channels",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -199,17 +199,17 @@ namespace FinalProject.Migrations
                     Body = table.Column<string>(type: "character varying(280)", maxLength: 280, nullable: false),
                     PostedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastEditedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    TopicID = table.Column<int>(type: "integer", nullable: true)
+                    TopicId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Posts_Topics_TopicID",
-                        column: x => x.TopicID,
+                        name: "FK_Posts_Topics_TopicId",
+                        column: x => x.TopicId,
                         principalTable: "Topics",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -301,9 +301,9 @@ namespace FinalProject.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_TopicID",
+                name: "IX_Posts_TopicId",
                 table: "Posts",
-                column: "TopicID");
+                column: "TopicId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubComments_CommentId",
@@ -311,9 +311,9 @@ namespace FinalProject.Migrations
                 column: "CommentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Topics_ChannelID",
+                name: "IX_Topics_ChannelId",
                 table: "Topics",
-                column: "ChannelID");
+                column: "ChannelId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

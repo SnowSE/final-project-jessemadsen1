@@ -6,6 +6,7 @@ using FinalProject.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FinalProject.Pages
 {
@@ -17,9 +18,7 @@ namespace FinalProject.Pages
         {
             this.dbContext = dbContext;
         }
-        public void OnGet()
-        {
-        }
+
 
         [BindProperty]
         public Post NewPost { get; set; }
@@ -27,12 +26,18 @@ namespace FinalProject.Pages
         public async Task<IActionResult> OnPostAsync()
         {
             NewPost.Slug = NewPost.Title.GenerateSlug();
+
             if (ModelState.IsValid)
             {
                 await dbContext.Posts.AddAsync(NewPost);
                 await dbContext.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
+            return Page();
+        }
+        public IActionResult OnGet()
+        {
+            ViewData["TopicID"] = new SelectList(dbContext.Topics, "ID", "Title");
             return Page();
         }
     }

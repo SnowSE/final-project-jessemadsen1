@@ -59,15 +59,10 @@
                                     <div class="accordion-body">
                                         <form method="post">
                                             <input type="hidden" name="commentId" value="@comment.ID" />
-                                            <input type="hidden" name="PostId" value="@Model.Post.ID" />
+                                            <input type="hidden" name="Comment.PostId" value="@Model.Post.ID" />
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <form method="post">
-                                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                                        <div class="form-group">
-                                                            <label asp-for="Comment.PostId" class="control-label"></label>
-                                                            <select asp-for="Comment.PostId" class="form-control" asp-items="ViewBag.PostId"></select>
-                                                        </div>
                                                         <div class="form-group">
                                                             <label asp-for="Comment.Body" class="control-label"></label>
                                                             <input asp-for="Comment.Body" class="form-control" />

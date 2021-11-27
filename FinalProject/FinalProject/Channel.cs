@@ -62,6 +62,8 @@ namespace FinalProject
 
         public DateTime? LastEditedon { get; set; }
 
+        public int Vote { get; set; }
+
         public int TopicId { get; set; }
         public Topic Topic { get; set; }
 
@@ -83,6 +85,8 @@ namespace FinalProject
         public DateTime PostedOn { get; set; } = DateTime.Now;
         [DisplayName("Topic")]
         public int PostId { get; set; }
+
+        public int Vote { get; set; }
         public Post Post { get; set; }
 
         public bool HideComment { get; set; }
