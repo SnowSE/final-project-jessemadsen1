@@ -34,6 +34,7 @@ namespace FinalProject.Pages
             var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
             var currentUserName = claim.Value;
             Comment.Author = currentUserName;
+            Comment.PostedOn = System.DateTime.Now;
 
             if (!ModelState.IsValid)
             {

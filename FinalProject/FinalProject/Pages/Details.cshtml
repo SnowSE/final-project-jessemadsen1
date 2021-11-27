@@ -31,13 +31,13 @@
                 @if (Model.IsAdmin)
                 {
                     @*<a asp-page="./Edit" asp-route-ID="Model.Post.ID">Edit</a>
-                    <span> | </span>
-                    <a asp-page="./Delete" asp-route-ID="Model.Post.ID">Delete</a>
-                    <span> | </span>*@
+            <span> | </span>
+            <a asp-page="./Delete" asp-route-ID="Model.Post.ID">Delete</a>
+            <span> | </span>*@
 
                 }
                 <a asp-page="./Index">Back to Blogs</a>
-
+                <br>
 
                 @{int i = 0;}
                 @if (this.User.Identity.IsAuthenticated)
@@ -51,7 +51,7 @@
                         <div class="accordion" ID="@("accordion" + comment.ID)">
                             <div class="accordion-item">
                                 <h6 class="accordion-header" ID="@("heading" + comment.ID)">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@("collapse" + comment.ID)" aria-expanded="true" aria-controls="@("collapse" + comment.ID)">
+                                    <button class="btn btn-outline-info" type="button" data-bs-toggle="collapse" data-bs-target="#@("collapse" + comment.ID)" aria-expanded="false" aria-controls="@("collapse" + comment.ID)">
                                         Add Comment
                                     </button>
                                 </h6>
@@ -72,11 +72,6 @@
                                                             <label asp-for="Comment.Body" class="control-label"></label>
                                                             <input asp-for="Comment.Body" class="form-control" />
                                                             <span asp-validation-for="Comment.Body" class="text-danger"></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label asp-for="Comment.PostedOn" class="control-label"></label>
-                                                            <input asp-for="Comment.PostedOn" class="form-control" />
-                                                            <span asp-validation-for="Comment.PostedOn" class="text-danger"></span>
                                                         </div>
                                                         <div class="form-group">
                                                             <br>
