@@ -32,27 +32,53 @@ namespace FinalProject.Pages
             public bool CanEdit { get; private set; }
             public bool IsAdmin { get; private set; }
 
-            public async Task<IActionResult> OnGetAsync(string slug)
+        public Topic Topic { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(string slug)
+        {
+            var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
+            IsAdmin = authResult.Succeeded;
+
+            if (slug == null)
             {
-                var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
-                IsAdmin = authResult.Succeeded;
-
-                if (slug == null)
-                {
-                    return NotFound();
-                }
-
-            Posts = await _dbContext.Posts.ToListAsync();
-
-            ViewData["PostId"] = new SelectList(_dbContext.Posts, "ID", "Title");
-
-                if (slug == null)
-                {
-                    return NotFound();
-                }
-                return Page();
+                return NotFound();
             }
-            public async Task<IActionResult> OnPostAsync(int commentId, string slug)
+
+            Topic = await _dbContext.Topics
+                .Include(p => p.Posts)
+                .FirstOrDefaultAsync(m => m.Slug.ToLower() == slug.ToLower());
+
+            ViewData["TopicId"] = new SelectList(_dbContext.Topics, "ID", "Title");
+
+            if (Topic == null)
+            {
+                return NotFound();
+            }
+            return Page();
+        }
+
+
+        //public async Task<IActionResult> OnGetAsync(string slug)
+        //{
+        //    var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
+        //    IsAdmin = authResult.Succeeded;
+
+        //    if (slug == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //Posts = await _dbContext.Posts.ToListAsync();
+
+        //ViewData["PostId"] = new SelectList(_dbContext.Posts, "ID", "Title");
+
+        //    if (slug == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Page();
+        //}
+        public async Task<IActionResult> OnPostAsync(int commentId, string slug)
             {
                 var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
                 var currentUserName = claim.Value;

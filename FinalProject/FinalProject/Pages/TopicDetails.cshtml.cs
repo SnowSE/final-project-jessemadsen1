@@ -40,7 +40,7 @@ namespace FinalProject.Pages
                 .Include(p => p.Topics)
                 .FirstOrDefaultAsync(m => m.Slug.ToLower() == slug.ToLower());
 
-            ViewData["BlogPostId"] = new SelectList(_dbContext.Channels, "ID", "Title");
+            ViewData["ChannelId"] = new SelectList(_dbContext.Channels, "ID", "Title");
 
             if (Channel == null)
             {
