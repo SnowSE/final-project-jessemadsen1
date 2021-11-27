@@ -16,8 +16,35 @@ namespace FinalProject.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.10")
+                .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+            modelBuilder.Entity("FinalProject.Author", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Avatar")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Body")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("VoteTotal")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Author");
+                });
 
             modelBuilder.Entity("FinalProject.Channel", b =>
                 {
@@ -49,6 +76,9 @@ namespace FinalProject.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("text");
 
+                    b.Property<int?>("AuthorID")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -63,10 +93,12 @@ namespace FinalProject.Migrations
                     b.Property<DateTime>("PostedOn")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("Vote")
+                    b.Property<int?>("Vote")
                         .HasColumnType("integer");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("AuthorID");
 
                     b.HasIndex("PostId");
 
@@ -79,6 +111,12 @@ namespace FinalProject.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Author")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("AuthorID")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Body")
                         .IsRequired()
@@ -106,6 +144,8 @@ namespace FinalProject.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("AuthorID");
 
                     b.HasIndex("TopicId");
 
@@ -368,6 +408,10 @@ namespace FinalProject.Migrations
 
             modelBuilder.Entity("FinalProject.Comment", b =>
                 {
+                    b.HasOne("FinalProject.Author", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("AuthorID");
+
                     b.HasOne("FinalProject.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
@@ -379,6 +423,10 @@ namespace FinalProject.Migrations
 
             modelBuilder.Entity("FinalProject.Post", b =>
                 {
+                    b.HasOne("FinalProject.Author", null)
+                        .WithMany("Posts")
+                        .HasForeignKey("AuthorID");
+
                     b.HasOne("FinalProject.Topic", "Topic")
                         .WithMany("Posts")
                         .HasForeignKey("TopicId")
@@ -459,6 +507,13 @@ namespace FinalProject.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FinalProject.Author", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("FinalProject.Channel", b =>

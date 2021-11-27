@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FinalProject.Migrations
 {
-    public partial class start : Migration
+    public partial class start2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,6 +45,22 @@ namespace FinalProject.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Author",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Avatar = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Body = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    UserName = table.Column<string>(type: "text", nullable: true),
+                    VoteTotal = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Author", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,14 +212,23 @@ namespace FinalProject.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Slug = table.Column<string>(type: "text", nullable: true),
+                    Author = table.Column<string>(type: "text", nullable: true),
                     Body = table.Column<string>(type: "character varying(280)", maxLength: 280, nullable: false),
                     PostedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastEditedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    TopicId = table.Column<int>(type: "integer", nullable: false)
+                    Vote = table.Column<int>(type: "integer", nullable: false),
+                    TopicId = table.Column<int>(type: "integer", nullable: false),
+                    AuthorID = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Posts_Author_AuthorID",
+                        column: x => x.AuthorID,
+                        principalTable: "Author",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Posts_Topics_TopicId",
                         column: x => x.TopicId,
@@ -222,11 +247,19 @@ namespace FinalProject.Migrations
                     Body = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     PostedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     PostId = table.Column<int>(type: "integer", nullable: false),
-                    HideComment = table.Column<bool>(type: "boolean", nullable: false)
+                    Vote = table.Column<int>(type: "integer", nullable: true),
+                    HideComment = table.Column<bool>(type: "boolean", nullable: false),
+                    AuthorID = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Comments_Author_AuthorID",
+                        column: x => x.AuthorID,
+                        principalTable: "Author",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Comments_Posts_PostId",
                         column: x => x.PostId,
@@ -296,9 +329,19 @@ namespace FinalProject.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_AuthorID",
+                table: "Comments",
+                column: "AuthorID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Comments_PostId",
                 table: "Comments",
                 column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_AuthorID",
+                table: "Posts",
+                column: "AuthorID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_TopicId",
@@ -347,6 +390,9 @@ namespace FinalProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "Author");
 
             migrationBuilder.DropTable(
                 name: "Topics");

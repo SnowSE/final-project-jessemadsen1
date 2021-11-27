@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using FinalProject;
 
 namespace FinalProject.Data
 {
@@ -17,6 +18,7 @@ namespace FinalProject.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set;}
         public DbSet<SubComment> SubComments { get; set; }
+        public DbSet<FinalProject.Author> Author { get; set; }
 
     }
 }

@@ -25,6 +25,11 @@ namespace FinalProject.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+            var currentUserName = claim.Value;
+            NewPost.Author = currentUserName;
+            NewPost.PostedOn = System.DateTime.Now;
+
             NewPost.Slug = NewPost.Title.GenerateSlug();
 
             if (ModelState.IsValid)

@@ -50,6 +50,7 @@ namespace FinalProject
         /*        [Required]*/
         public string Slug { get; set; }
 
+        public string Author { get; set; }
 
         [Required]
         [StringLength(280)]
@@ -86,13 +87,37 @@ namespace FinalProject
         [DisplayName("Topic")]
         public int PostId { get; set; }
 
-        public int Vote { get; set; }
+        public int? Vote { get; set; }
         public Post Post { get; set; }
 
         public bool HideComment { get; set; }
 
         public List<SubComment> SubComments { get; set; }
     }
+
+    public class Author
+    {
+        [Required]
+        public int ID { get; set; }
+
+        [Required, Display(Name = "Avatar")]
+        [StringLength(50)]
+        public string Avatar { get; set; }
+
+        [StringLength(500)]
+        public string? Body { get; set; }
+
+        public string UserName { get; set; }
+
+        public int? VoteTotal { get; set; }
+
+        public List<Post> Posts { get; set; }
+        public List<Comment> Comments { get; set; }
+    }
+
+
+
+
 
     public class SubComment
     {
