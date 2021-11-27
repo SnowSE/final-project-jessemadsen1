@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinalProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211126223855_Post2")]
-    partial class Post2
+    [Migration("20211127061012_start2")]
+    partial class start2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -98,12 +98,12 @@ namespace FinalProject.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int?>("TopicID")
+                    b.Property<int>("TopicId")
                         .HasColumnType("integer");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("TopicID");
+                    b.HasIndex("TopicId");
 
                     b.ToTable("Posts");
                 });
@@ -146,7 +146,7 @@ namespace FinalProject.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("ChannelID")
+                    b.Property<int>("ChannelId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Slug")
@@ -159,7 +159,7 @@ namespace FinalProject.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ChannelID");
+                    b.HasIndex("ChannelId");
 
                     b.ToTable("Topics");
                 });
@@ -375,9 +375,13 @@ namespace FinalProject.Migrations
 
             modelBuilder.Entity("FinalProject.Post", b =>
                 {
-                    b.HasOne("FinalProject.Topic", null)
+                    b.HasOne("FinalProject.Topic", "Topic")
                         .WithMany("Posts")
-                        .HasForeignKey("TopicID");
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Topic");
                 });
 
             modelBuilder.Entity("FinalProject.SubComment", b =>
@@ -393,9 +397,13 @@ namespace FinalProject.Migrations
 
             modelBuilder.Entity("FinalProject.Topic", b =>
                 {
-                    b.HasOne("FinalProject.Channel", null)
+                    b.HasOne("FinalProject.Channel", "Channel")
                         .WithMany("Topics")
-                        .HasForeignKey("ChannelID");
+                        .HasForeignKey("ChannelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Channel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

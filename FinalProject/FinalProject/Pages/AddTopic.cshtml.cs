@@ -6,6 +6,7 @@ using FinalProject.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FinalProject.Pages
 {
@@ -16,8 +17,11 @@ namespace FinalProject.Pages
         {
             this.dbContext = dbContext;
         }
-        public void OnGet()
+
+        public IActionResult OnGet()
         {
+            ViewData["ChannelId"] = new SelectList(dbContext.Channels, "ID", "Title");
+            return Page();
         }
 
         [BindProperty]

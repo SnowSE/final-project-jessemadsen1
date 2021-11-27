@@ -1,28 +1,36 @@
 ﻿@page
+
 @model FinalProject.Pages.AddTopicModel
 @{
 }
 
-<div class="col-md-4"><h1>Topic Settings</h1></div>
 
+<div class="col-md-4">
+    <h1>Topic Settings</h1>
+</div>
 <br>
 <br>
-
 <div class="col-md-12 col-sm-12 mx-auto mb-5">
     <form method="post">
         <div class="mb-3 row">
             <div class="col-sm-4 text-sm-end align-self-center">
-                <label class="form-label" asp-for="NewTopic.Title"></label>
+                <label asp-for="NewTopic.ChannelId" class="form-label"></label>
             </div>
             <div class="col">
-                <input class="form-control" asp-for="NewTopic.Title" />
-                <span class="form-text" asp-validation-for="NewTopic.Title"></span>
+                <select asp-for="NewTopic.ChannelId" class="form-control" asp-items="ViewBag.ChannelId"></select>
             </div>
         </div>
-
-        <div class="row">
+        <div class="mb-3 row">
             <div class="col-sm-4 text-sm-end align-self-center">
+                <label asp-for="NewTopic.Title" class="form-label"></label>
             </div>
+            <div class="col">
+                <input asp-for="NewTopic.Title" class="form-control" />
+                <span asp-validation-for="NewTopic.Title" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 text-sm-end align-self-center"></div>
             <div class="col-8">
                 <button type="submit" class="btn btn-outline-primary">Add Topic</button>
             </div>
@@ -31,5 +39,6 @@
 </div>
 
 @section scripts{
+
     <partial name="_ValidationScriptsPartial" />
 }

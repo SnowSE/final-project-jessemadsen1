@@ -34,6 +34,8 @@ namespace FinalProject
         public string Title { get; set; }
 
         public string Slug { get; set; }
+        public int ChannelId { get; set; }
+        public Channel Channel { get; set; }
 
         public List<Post> Posts { get; set; }
     }
@@ -59,6 +61,9 @@ namespace FinalProject
         public DateTime PostedOn { get; set; } = DateTime.Now;
 
         public DateTime? LastEditedon { get; set; }
+
+        public int TopicId { get; set; }
+        public Topic Topic { get; set; }
 
         public List<Comment> Comments { get; set; }
     }
