@@ -1,0 +1,27 @@
+﻿@page "/{slug}"
+@model PostDetailsModel
+@{
+    ViewData["Title"] = "Posts page";
+}
+
+<h1>Post Title</h1>
+
+<p>
+    <a asp-page="AddPost">Add a Post</a>
+    <hr>
+    <br>
+</p>
+
+
+@foreach (var item in Model.Posts)
+{
+
+    <br>
+    <h2>
+        @Html.DisplayFor(modelItem => item.Title)
+    </h2>
+
+    <p><em>@Html.DisplayFor(modelItem => item.Body)</em></p>
+   
+
+    }

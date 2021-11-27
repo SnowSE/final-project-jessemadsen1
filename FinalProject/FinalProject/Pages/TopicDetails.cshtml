@@ -1,0 +1,39 @@
+﻿@page 
+@model FinalProject.Pages.TopicDetailsModel
+@{
+    ViewData["Title"] = "Topic page";
+}
+
+
+
+<h1>Topic</h1>
+
+@if (Model.IsAdmin)
+{
+    <p>
+        <a asp-page="AddTopic">Add New Topic</a>
+        <hr>
+        <br>
+    </p>
+}
+
+@foreach (var item in Model.Topics)
+{
+
+    <div class="col-md-8">
+        <h2>
+            <a asp-page="./PostDetails" asp-route-slug="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
+        </h2>
+
+    </div>
+
+
+    @if (Model.IsAdmin)
+    {
+        <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a>
+        <span> | </span>
+        <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+
+    }
+    <hr>
+}

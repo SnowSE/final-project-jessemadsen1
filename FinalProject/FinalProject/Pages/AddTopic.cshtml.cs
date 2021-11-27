@@ -7,13 +7,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FinalProject.Pages.Shared
+namespace FinalProject.Pages
 {
-    [Authorize]
-    public class AddChannelModel : PageModel
+    public class AddTopicModel : PageModel
     {
         private readonly ApplicationDbContext dbContext;
-        public AddChannelModel(ApplicationDbContext dbContext)
+        public AddTopicModel(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
@@ -22,14 +21,14 @@ namespace FinalProject.Pages.Shared
         }
 
         [BindProperty]
-        public Channel NewChannel { get; set; }
+        public Topic NewTopic { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            NewChannel.Slug = NewChannel.Title.GenerateSlug();
+            NewTopic.Slug = NewTopic.Title.GenerateSlug();
             if (ModelState.IsValid)
             {
-                await dbContext.Channels.AddAsync(NewChannel);
+                await dbContext.Topics.AddAsync(NewTopic);
                 await dbContext.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }

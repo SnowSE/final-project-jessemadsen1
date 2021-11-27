@@ -57,17 +57,53 @@ namespace FinalProject.Migrations
                     b.Property<bool>("HideComment")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("PostedOn")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("TopicId")
+                    b.HasKey("ID");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("FinalProject.Post", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasMaxLength(280)
+                        .HasColumnType("character varying(280)");
+
+                    b.Property<DateTime?>("LastEditedon")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("PostedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int?>("TopicID")
                         .HasColumnType("integer");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("TopicId");
+                    b.HasIndex("TopicID");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("FinalProject.SubComment", b =>
@@ -108,19 +144,11 @@ namespace FinalProject.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasMaxLength(280)
-                        .HasColumnType("character varying(280)");
-
                     b.Property<int?>("ChannelID")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("LastEditedon")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("PostedOn")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<string>("Slug")
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -334,13 +362,20 @@ namespace FinalProject.Migrations
 
             modelBuilder.Entity("FinalProject.Comment", b =>
                 {
-                    b.HasOne("FinalProject.Topic", "Topic")
+                    b.HasOne("FinalProject.Post", "Post")
                         .WithMany("Comments")
-                        .HasForeignKey("TopicId")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Topic");
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("FinalProject.Post", b =>
+                {
+                    b.HasOne("FinalProject.Topic", null)
+                        .WithMany("Posts")
+                        .HasForeignKey("TopicID");
                 });
 
             modelBuilder.Entity("FinalProject.SubComment", b =>
@@ -422,9 +457,14 @@ namespace FinalProject.Migrations
                     b.Navigation("SubComments");
                 });
 
-            modelBuilder.Entity("FinalProject.Topic", b =>
+            modelBuilder.Entity("FinalProject.Post", b =>
                 {
                     b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("FinalProject.Topic", b =>
+                {
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

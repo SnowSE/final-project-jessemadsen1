@@ -33,6 +33,22 @@ namespace FinalProject
         [StringLength(100)]
         public string Title { get; set; }
 
+        public string Slug { get; set; }
+
+        public List<Post> Posts { get; set; }
+    }
+    public class Post
+    {
+        [Required]
+        public int ID { get; set; }
+
+        [Required, Display(Name = "Title")]
+        [StringLength(100)]
+        public string Title { get; set; }
+        /*        [Required]*/
+        public string Slug { get; set; }
+
+
         [Required]
         [StringLength(280)]
         public string Body
@@ -61,8 +77,8 @@ namespace FinalProject
         [Required]
         public DateTime PostedOn { get; set; } = DateTime.Now;
         [DisplayName("Topic")]
-        public int TopicId { get; set; }
-        public Topic Topic { get; set; }
+        public int PostId { get; set; }
+        public Post Post { get; set; }
 
         public bool HideComment { get; set; }
 

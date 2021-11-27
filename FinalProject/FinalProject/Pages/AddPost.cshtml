@@ -1,0 +1,43 @@
+﻿@page
+@model FinalProject.Pages.AddPostModel
+@{
+}
+<div class="col-md-12 col-sm-12 mx-auto mb-5">
+    <h1><small class="text-muted">Add New Post</small></h1>
+    <br>
+    <br>
+</div>
+
+<div class="col-md-12 col-sm-12 mx-auto mb-5">
+    <form method="post">
+        <div class="mb-3 row">
+            <div class="col-sm-4 text-sm-end align-self-center">
+                <label class="form-label" asp-for="NewPost.Title"></label>
+            </div>
+            <div class="col">
+                <input class="form-control" asp-for="NewPost.Title" />
+                <span class="form-text" asp-validation-for="NewPost.Title"></span>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <div class="col-sm-4 text-sm-end align-self-center">
+                <label class="form-label" asp-for="NewPost.Body"></label>
+            </div>
+            <div class="col">
+                <textarea class="form-control" asp-for="NewPost.Body" rows="5"></textarea>
+                <span class="form-text" asp-validation-for="NewPost.Body"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 text-sm-end align-self-center">
+            </div>
+            <div class="col-8">
+                <button type="submit" class="btn btn-outline-primary">Add Post</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
