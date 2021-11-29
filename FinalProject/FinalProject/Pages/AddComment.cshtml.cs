@@ -22,6 +22,7 @@ namespace FinalProject.Pages
         public IActionResult OnGet()
         {
             ViewData["PostId"] = new SelectList(_context.Posts, "ID", "Title");
+            MyGlobalVariables.LastRoute = Request.Headers["Referer"].ToString();
             return Page();
         }
 
@@ -44,7 +45,7 @@ namespace FinalProject.Pages
             _context.Comments.Add(Comment);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Details",new { slug = MyGlobalVariables.LastRoute.Split('/').Last() });
         }
     }
 }

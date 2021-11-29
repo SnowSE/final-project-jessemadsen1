@@ -10,6 +10,11 @@ using System.ComponentModel;
 
 namespace FinalProject
 {
+    public static class MyGlobalVariables
+    {
+        public static string LastRoute { get; set; }
+    }
+
     public class Channel
     {
         [Required]

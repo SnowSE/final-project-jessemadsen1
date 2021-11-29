@@ -13,6 +13,8 @@ namespace FinalProject.Pages
     public class AddTopicModel : PageModel
     {
         private readonly ApplicationDbContext dbContext;
+
+
         public AddTopicModel(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
@@ -21,6 +23,7 @@ namespace FinalProject.Pages
         public IActionResult OnGet()
         {
             ViewData["ChannelID"] = new SelectList(dbContext.Channels, "ID", "Title");
+            MyGlobalVariables.LastRoute = Request.Headers["Referer"].ToString();
             return Page();
         }
 
@@ -34,7 +37,7 @@ namespace FinalProject.Pages
             {
                 await dbContext.Topics.AddAsync(NewTopic);
                 await dbContext.SaveChangesAsync();
-                return RedirectToPage("./Index");
+                return Redirect(MyGlobalVariables.LastRoute);
             }
             return Page();
         }

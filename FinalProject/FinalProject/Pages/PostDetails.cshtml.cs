@@ -48,7 +48,7 @@ namespace FinalProject.Pages
                 .Include(p => p.Posts)
                 .FirstOrDefaultAsync(m => m.Slug.ToLower() == slug.ToLower());
 
-            ViewData["TopicId"] = new SelectList(_dbContext.Topics, "ID", "Title");
+            //ViewData["TopicId"] = new SelectList(_dbContext.Topics, "ID", "Title");
 
             if (Topic == null)
             {

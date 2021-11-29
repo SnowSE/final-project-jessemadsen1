@@ -22,7 +22,7 @@
 
     <div class="col-md-8">
         <h2>
-            <a asp-page="./PostDetails" asp-route-slug="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
+            <a asp-page="./PostDetails" asp-route-slug="@item.Slug" asp-route-ID="@item.ID">@Html.DisplayFor(modelItem => item.Title)</a>
         </h2>
 
     </div>

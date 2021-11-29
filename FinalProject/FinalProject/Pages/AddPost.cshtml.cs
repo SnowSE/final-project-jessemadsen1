@@ -36,7 +36,7 @@ namespace FinalProject.Pages
             {
                 await dbContext.Posts.AddAsync(NewPost);
                 await dbContext.SaveChangesAsync();
-                return RedirectToPage("./Index");
+                return RedirectToPage("./Details", new { slug = NewPost.Slug });
             }
             return Page();
         }
