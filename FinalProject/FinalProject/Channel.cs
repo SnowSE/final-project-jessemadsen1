@@ -23,7 +23,13 @@ namespace FinalProject
         [Required, Display(Name = "Title")]
         [StringLength(100)]
         public string Title { get; set; }
-        /*        [Required]*/
+
+        [Required]
+        [StringLength(280)]
+        public string Body
+        {
+            get; set;
+        }
         public string Slug { get; set; }
 
         public List<Topic> Topics { get; set; }
@@ -37,6 +43,13 @@ namespace FinalProject
         [Required, Display(Name = "Title")]
         [StringLength(100)]
         public string Title { get; set; }
+
+        [Required]
+        [StringLength(280)]
+        public string Body
+        {
+            get; set;
+        }
 
         public string Slug { get; set; }
         public int ChannelId { get; set; }

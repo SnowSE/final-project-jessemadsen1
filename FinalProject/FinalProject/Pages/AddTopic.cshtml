@@ -29,6 +29,15 @@
                 <span asp-validation-for="NewTopic.Title" class="text-danger"></span>
             </div>
         </div>
+        <div class="mb-3 row">
+            <div class="col-sm-4 text-sm-end align-self-center">
+                <label class="form-label" asp-for="NewTopic.Body"></label>
+            </div>
+            <div class="col">
+                <textarea class="form-control" asp-for="NewTopic.Body" rows="5"></textarea>
+                <span class="form-text" asp-validation-for="NewTopic.Body"></span>
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-4 text-sm-end align-self-center"></div>
             <div class="col-8">

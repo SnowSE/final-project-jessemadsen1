@@ -1,13 +1,16 @@
-﻿@page  
+﻿@page
+
 @model PostDetailsModel
 @{
     ViewData["Title"] = "Posts page";
 }
 
-<h1>Post Title</h1>
+<h1>@Html.DisplayFor(modelItem => Model.Topic.Title)</h1>
+
+<p><em>@Html.DisplayFor(modelItem => Model.Topic.Body)</em></p>
 
 <p>
-    <a asp-page="AddPost">Add a Post</a>
+    <a asp-page="AddPost">Add New Post</a>
     <hr>
     <br>
 </p>
