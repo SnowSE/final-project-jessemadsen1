@@ -91,9 +91,9 @@ namespace FinalProject.Pages
             var comment = await _context.Comments.FindAsync(commentid);
             return RedirectToPage("./EditComment", new { id = commentid });
         }
-        private bool BlogExists(int id)
-        {
-            return _context.Posts.Any(e => e.ID == id);
-        }
+        //private bool BlogExists(int id)
+        //{
+        //    return _context.Posts.Any(e => e.ID == id);
+        //}
     }
 }

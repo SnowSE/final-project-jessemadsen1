@@ -102,6 +102,9 @@ namespace FinalProject
 
         [Required]
         public DateTime PostedOn { get; set; } = DateTime.Now;
+
+        public DateTime? LastEditedon { get; set; }
+
         [DisplayName("Topic")]
         public int PostId { get; set; }
 

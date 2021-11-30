@@ -3,107 +3,120 @@
 @{
     ViewData["Title"] = Model.Post.Title;
 }
-   
+
+
 <div class="col-md-8">
-            <br>
-            <h2>
-                @Model.Post.Title
-            </h2>
-            <p>
-                @if (Model.Post.LastEditedon == null)
-                {
-                    @Html.DisplayFor(modelItem => Model.Post.PostedOn)
-                }
-                else
-                {
-                    @Html.DisplayFor(modelItem => Model.Post.LastEditedon)
-                }
-            </p>
-            <p><em>@Html.DisplayFor(modelItem => Model.Post.Body)</em></p>
-            <div>
+    <br>
+    <h2>
+        @Model.Post.Title
+    </h2>
+    <p>
+        @if (Model.Post.LastEditedon == null)
+        {
+            @Html.DisplayFor(modelItem => Model.Post.PostedOn)
+        }
+        else
+        {
+            @Html.DisplayFor(modelItem => Model.Post.LastEditedon)
+        }
+    </p>
+    <p>
+        <em>@Html.DisplayFor(modelItem => Model.Post.Body)</em>
+    </p>
+    <div>
 
-                @if (this.User.Identity.IsAuthenticated)
-                {
-                    <a asp-page="./AddComment">Add comment</a>
-                    <span> | </span>
+        @if (this.User.Identity.IsAuthenticated)
+        {
 
-                }
-                @if (Model.IsAdmin)
-                {
-                    @*<a asp-page="./Edit" asp-route-ID="Model.Post.ID">Edit</a>
+            <a asp-page="./AddComment">Add comment</a>
             <span> | </span>
-            <a asp-page="./Delete" asp-route-ID="Model.Post.ID">Delete</a>
-            <span> | </span>*@
 
-                }
+        }
+        @if (Model.IsAdmin)
+        {
+            @*
+                <a asp-page="./Edit" asp-route-ID="Model.Post.ID">Edit</a>
+                <span> | </span>
+                <a asp-page="./Delete" asp-route-ID="Model.Post.ID">Delete</a>
+                <span> | </span>*@
 
-                @{int i = 0;}
-                @if (this.User.Identity.IsAuthenticated)
-                    @foreach (var comment in Model.Post.Comments)
-                    {
+        }
 
-                        if (i > 0)
-                        {
-                            break;
-                        }
-                        <div class="accordion" ID="@("accordion" + comment.ID)">
-                            <div class="accordion-item">
-                                <h6 class="accordion-header" ID="@("heading" + comment.ID)">
-                                    <button class="btn btn-outline-info" type="button" data-bs-toggle="collapse" data-bs-target="#@("collapse" + comment.ID)" aria-expanded="false" aria-controls="@("collapse" + comment.ID)">
-                                        Add Comment
-                                    </button>
-                                </h6>
-                                <div ID="@("collapse" + @comment.ID)" class="accordion-collapse collapse">
-                                    <div class="accordion-body">
-                                        <form method="post">
-                                            <input type="hidden" name="commentId" value="@comment.ID" />
-                                            <input type="hidden" name="Comment.PostId" value="@Model.Post.ID" />
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <form method="post">
-                                                        <div class="form-group">
-                                                            <label asp-for="Comment.Body" class="control-label"></label>
-                                                            <input asp-for="Comment.Body" class="form-control" />
-                                                            <span asp-validation-for="Comment.Body" class="text-danger"></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <br>
-                                                            <button type="submit" class="btn btn-outline-primary">Add Comment</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        i++;
-                    }
-            </div>
-
-        </div>
-        <div class="col-md-8">
+        @{int i = 0;}
+        @if (this.User.Identity.IsAuthenticated)
             @foreach (var comment in Model.Post.Comments)
             {
-                @if (@comment.HideComment == false)
-                {
-            
-                    <hr>
-                    <br>
-                    <p>@comment.Body</p>
-                    <p>Posted by:  @comment.Author    @comment.PostedOn   </p>
 
-                    @if (Model.IsAdmin)
-                    {
-        <form method="post">
-            <p><button type="submit" class="btn btn-outline-info" asp-page-handler="EditComment" asp-route-commentId="@comment.ID">Edit</button> Edit Comment?
-            <button type="submit" class="btn btn-outline-warning" asp-page-handler="HideComment" asp-route-commentId="@comment.ID" asp-route-partyName="@Model.Post.Title">Hide</button> Hide Comment?
-            <button type="submit" class="btn btn-outline-danger" asp-page-handler="DeleteComment" asp-route-commentId="@comment.ID">Delete</button> Delete Comment?</p>
-        </form>
-                     }
-                 }
+                if (i > 0)
+                {
+                    break;
+                }
+
+                <div class="accordion" ID="@("accordion" + comment.ID)">
+                    <div class="accordion-item">
+                        <h6 class="accordion-header" ID="@("heading" + comment.ID)">
+                            <button class="btn btn-outline-info" type="button" data-bs-toggle="collapse" data-bs-target="#@("collapse" + comment.ID)" aria-expanded="false" aria-controls="@("collapse" + comment.ID)">
+                                Add Comment
+                            </button>
+                        </h6>
+                        <div ID="@("collapse" + @comment.ID)" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <form method="post">
+                                    <input type="hidden" name="commentId" value="@comment.ID" />
+                                    <input type="hidden" name="Comment.PostId" value="@Model.Post.ID" />
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <form method="post">
+                                                <div class="form-group">
+                                                    <label asp-for="Comment.Body" class="control-label"></label>
+                                                    <input asp-for="Comment.Body" class="form-control" />
+                                                    <span asp-validation-for="Comment.Body" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <br>
+                                                    <button type="submit" class="btn btn-outline-primary">Add Comment</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                i++;
             }
+
+    </div>
+</div>
+<div class="col-md-8">
+    @foreach (var comment in Model.Post.Comments)
+    {
+        @if (@comment.HideComment == false)
+        {
+
+
+            <hr>
+            <br>
+            <p>@comment.Body</p>
+            <p>Posted by:  @comment.Author    @comment.PostedOn   </p>
+
+            @if (Model.IsAdmin || this.User.Identity.IsAuthenticated)
+            {
+
+                <form method="post">
+                    <p>
+                        <button type="submit" class="btn btn-outline-info" asp-page-handler="EditComment" asp-route-commentId="@comment.ID">Edit</button> Edit Comment?
+
+                        @*<button type="submit" class="btn btn-outline-warning" asp-page-handler="HideComment" asp-route-commentId="@comment.ID" asp-route-partyName="@Model.Post.Title">Hide</button> Hide Comment?*@
+
+                        <button type="submit" class="btn btn-outline-danger" asp-page-handler="DeleteComment" asp-route-commentId="@comment.ID">Delete</button> Delete Comment?
+                    </p>
+                </form>
+            }
+        }
+    }
+
 </div>
 
 
