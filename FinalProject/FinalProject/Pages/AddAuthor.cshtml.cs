@@ -27,7 +27,6 @@ namespace FinalProject.Pages
         [BindProperty]
         public Author Author { get; set; }
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -38,7 +37,7 @@ namespace FinalProject.Pages
             _context.Author.Add(Author);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Setup");
         }
     }
 }

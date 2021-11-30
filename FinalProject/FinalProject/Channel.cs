@@ -105,13 +105,14 @@ namespace FinalProject
         [Required]
         public int ID { get; set; }
 
-        [Required, Display(Name = "Avatar")]
-        [StringLength(50)]
-        public string Avatar { get; set; }
+
+        public string? Avatar { get; set; }
 
         [StringLength(500)]
         public string? Body { get; set; }
 
+        [Required, Display(Name = "Public Name")]
+        [StringLength(30)]
         public string UserName { get; set; }
 
         public int? VoteTotal { get; set; }

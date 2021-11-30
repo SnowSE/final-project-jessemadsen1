@@ -21,7 +21,15 @@ namespace FinalProject
             using (var scope = host.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                try
+                {
                 db.Database.Migrate();
+
+                }
+                catch (Exception)
+                {
+
+                }
             }
 
             host.Run();
