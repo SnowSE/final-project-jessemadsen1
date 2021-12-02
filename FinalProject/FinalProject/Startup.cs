@@ -1,4 +1,5 @@
 using FinalProject.Data;
+using FinalProject.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,10 +31,22 @@ namespace FinalProject
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(convertUrlConnectionString(Configuration["DATABASE_URL"])));
             services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //made login easier code from class video
+            services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 3;
+
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddRazorPages();
 
+            services.AddTransient<IUserService, DefaultUserService>();
             services.AddControllers();
             services.AddAuthorization(options =>
             {

@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Identity;
 
 namespace FinalProject
 {
@@ -122,7 +123,7 @@ namespace FinalProject
         public int ID { get; set; }
 
 
-        public string? Avatar { get; set; }
+        public string? AvatarFileName { get; set; }
 
         [StringLength(500)]
         public string? Body { get; set; }
@@ -135,6 +136,8 @@ namespace FinalProject
 
         public List<Post> Posts { get; set; }
         public List<Comment> Comments { get; set; }
+
+
     }
 
 
