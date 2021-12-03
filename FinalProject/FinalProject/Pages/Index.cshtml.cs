@@ -25,7 +25,8 @@ namespace FinalProject.Pages
         public bool CanEdit { get; private set; }
         public bool IsAdmin { get; private set; }
 
-
+        [BindProperty]
+        public string ParentName { get; set; }
 
         public async Task OnGetAsync()
         {
@@ -33,6 +34,12 @@ namespace FinalProject.Pages
 
             var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
             IsAdmin = authResult.Succeeded;
+        }
+        public IActionResult OnPostAddParent()
+        {
+            //log.LogInformation("Adding new parent: {parent}", ParentName);
+            //itemManager.TopLevelItems.Add(new ParentItem { Name = ParentName });
+            return RedirectToPage();
         }
 
     }
