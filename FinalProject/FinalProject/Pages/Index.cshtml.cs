@@ -34,10 +34,6 @@ namespace FinalProject.Pages
             var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
             IsAdmin = authResult.Succeeded;
         }
-        public IActionResult OnPostAddChannel()
-        {
-            //log.LogInformation("Redirected to Add New Channel Page");
-            return RedirectToPage("./AddChannel");
-        }
+
     }
 }
