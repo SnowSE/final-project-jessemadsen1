@@ -9,8 +9,8 @@
 @if (Model.IsAdmin)
 {
 <div class="col-md-6 col-sm-12  mb-5">
-    <a asp-page="./Index">
-        <input type="button" class="btn btn-outline-secondary" value="Cancel" />
+    <a asp-page="./AddChannel">
+        <input type="button" class="btn btn-outline-info" value="Add Channel" />
     </a>
 </div>
 }
@@ -18,12 +18,17 @@
 @foreach (var item in Model.Channels)
 {
 
-    <div class="col-md-8">
-        <h2>
-            <a asp-page="./TopicDetails" asp-route-slug="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
-        </h2>
+<div class="col-md-8">
 
-    </div>
+    <form method="post" asp-page-handler="AddParent">
+
+
+    </form>
+    <h2>
+        <a asp-page="./TopicDetails" asp-route-slug="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
+    </h2>
+
+</div>
 
 
     @if (Model.IsAdmin)

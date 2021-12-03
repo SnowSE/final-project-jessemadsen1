@@ -34,19 +34,19 @@ namespace FinalProject.Pages
 
         public Topic Topic { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string slug)
+        public async Task<IActionResult> OnGetAsync(string child)
         {
             var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
             IsAdmin = authResult.Succeeded;
 
-            if (slug == null)
+            if (child == null)
             {
                 return NotFound();
             }
 
             Topic = await _dbContext.Topics
                 .Include(p => p.Posts)
-                .FirstOrDefaultAsync(m => m.Slug.ToLower() == slug.ToLower());
+                .FirstOrDefaultAsync(m => m.Slug.ToLower() == child.ToLower());
 
             //ViewData["TopicId"] = new SelectList(_dbContext.Topics, "ID", "Title");
 
