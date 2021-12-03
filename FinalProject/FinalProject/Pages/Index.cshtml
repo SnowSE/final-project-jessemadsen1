@@ -8,30 +8,32 @@
 
 @if (Model.IsAdmin)
 {
-    <p>
-        <a asp-page="AddChannel">Add New Channel</a>
-        <hr>
-        <br>
-    </p>
+    <div class="col-md-6 col-sm-12  mb-5">
+        <form method="post" asp-page-handler="AddChannel">
+                <div >
+                    <button type="submit" class="btn btn-outline-info">Add New Channel</button>
+                </div>         
+        </form>
+    </div>
 }
 
-    @foreach (var item in Model.Channels)
+@foreach (var item in Model.Channels)
+{
+
+    <div class="col-md-8">
+        <h2>
+            <a asp-page="./TopicDetails" asp-route-slug="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
+        </h2>
+
+    </div>
+
+
+    @if (Model.IsAdmin)
     {
+        <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a>
+        <span> | </span>
+        <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
 
-        <div class="col-md-8">
-            <h2>
-                <a asp-page="./TopicDetails" asp-route-slug="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
-            </h2>
-
-        </div>
-
-
-        @if (Model.IsAdmin)
-        {
-            <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a>
-            <span> | </span>
-            <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
-
-        }
-        <hr>
     }
+    <hr>
+}

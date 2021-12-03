@@ -14,6 +14,7 @@ namespace FinalProject.Pages
     {
         private readonly FinalProject.Data.ApplicationDbContext _dbContext;
         private readonly IAuthorizationService authorizationService;
+        private readonly ILogger<IndexModel> log;
 
         public IndexModel(FinalProject.Data.ApplicationDbContext dbContext, IAuthorizationService authorizationService)
         {
@@ -32,6 +33,11 @@ namespace FinalProject.Pages
 
             var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
             IsAdmin = authResult.Succeeded;
+        }
+        public IActionResult OnPostAddChannel()
+        {
+            //log.LogInformation("Redirected to Add New Channel Page");
+            return RedirectToPage("./AddChannel");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/AddChannel"
 @model FinalProject.Pages.Shared.AddChannelModel
 @{
 }
@@ -33,11 +33,14 @@
             </div>
             <div class="col-8">
                 <button type="submit" class="btn btn-outline-primary">Add Channel</button>
+                <a asp-page="./Index">
+                    <input type="button" class="btn btn-outline-secondary" value="Cancel" />
+                </a>
             </div>
         </div>
     </form>
-</div>
+    </div>
 
-@section scripts{
-<partial name="_ValidationScriptsPartial" />
-}
+    @section scripts{
+        <partial name="_ValidationScriptsPartial" />
+    }
