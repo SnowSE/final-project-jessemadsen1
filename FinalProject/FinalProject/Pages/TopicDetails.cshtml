@@ -13,11 +13,17 @@
 
 @if (Model.IsAdmin)
 {
-    <p>
-        <a asp-page="AddTopic">Add New Topic</a>
-        <hr>
-        <br>
-    </p>
+<div class="col-md-6 col-sm-12 mx-auto mb-5">
+    <form method="post" asp-page-handler="AddTopic" asp-route-slug="@Model.Channel.Slug">
+        <div class="row">
+            <div class="col-sm-4 text-sm-end align-self-center">
+            </div>
+            <div class="col-8">
+                <button type="submit" class="btn btn-outline-info">Add New Topic</button>
+            </div>
+        </div>
+    </form>
+</div>
 }
 
 @foreach (var item in Model.Channel.Topics)

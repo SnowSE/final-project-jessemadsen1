@@ -20,8 +20,9 @@ namespace FinalProject.Pages
             this.dbContext = dbContext;
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(Channel channel)
         {
+            Channel = channel;
             ViewData["ChannelID"] = new SelectList(dbContext.Channels, "ID", "Title");
             MyGlobalVariables.LastRoute = Request.Headers["Referer"].ToString();
             return Page();
@@ -29,10 +30,13 @@ namespace FinalProject.Pages
 
         [BindProperty]
         public Topic NewTopic { get; set; }
+        [BindProperty]
+        public Channel Channel { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
             NewTopic.Slug = NewTopic.Title.GenerateSlug();
+            NewTopic.ChannelId = Channel.ID;
             if (ModelState.IsValid)
             {
                 await dbContext.Topics.AddAsync(NewTopic);

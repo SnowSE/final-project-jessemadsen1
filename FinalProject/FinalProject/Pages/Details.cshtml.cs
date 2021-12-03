@@ -31,23 +31,23 @@ namespace FinalProject.Pages
         public bool CanEdit { get; private set; }
         public bool IsAdmin { get; private set; }
 
-        public async Task<IActionResult> OnGetAsync(string slug)
+        public async Task<IActionResult> OnGetAsync(string child)
         {
             var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
             IsAdmin = authResult.Succeeded;
 
-            if (slug == null)
+            if (child == null)
             {
                 return NotFound();
             }
 
             Post = await _context.Posts
                 .Include(p => p.Comments)
-                .FirstOrDefaultAsync(m => m.Slug.ToLower() == slug.ToLower());
+                .FirstOrDefaultAsync(m => m.Slug.ToLower() == child.ToLower());
 
             ViewData["PostId"] = new SelectList(_context.Posts, "ID", "Title");
 
-            if (slug == null)
+            if (child == null)
             {
                 return NotFound();
             }

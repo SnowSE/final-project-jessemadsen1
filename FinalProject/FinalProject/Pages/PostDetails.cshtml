@@ -21,7 +21,7 @@
 
     <div class="col-md-8">
         <h2>
-            <a asp-page="./Details" asp-route-Slug="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
+            <a asp-page="./Details"asp-route-slug="@item.Topic.Channel.Slug" asp-route-parent="@item.Topic.Slug" asp-route-child="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
         </h2>
 
     </div>
