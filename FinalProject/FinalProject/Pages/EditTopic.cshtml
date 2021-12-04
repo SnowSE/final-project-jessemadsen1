@@ -1,31 +1,32 @@
 ﻿@page
-@model FinalProject.Pages.EditChannelModel
+@model FinalProject.Pages.EditTopicModel
 @{
 }
-<div class="col-md-4"><h2>@Model.Channel.Title</h2></div>
+<div class="col-md-4"><h2>@Model.Topic.Title</h2></div>
 
 <br>
 <br>
 
 <div class="col-md-12 col-sm-12 mx-auto mb-5">
     <form method="post">
-        <input type="hidden" asp-for="Channel.ID" />
+        <input type="hidden" asp-for="Topic.ID" />
+        <input type="hidden" asp-for="Topic.ChannelId" />
         <div class="mb-3 row">
             <div>
-                <label class="form-label" asp-for="Channel.Title"></label>
+                <label class="form-label" asp-for="Topic.Title"></label>
             </div>
             <div class="col">
-                <input class="form-control" asp-for="Channel.Title" />
-                <span class="form-text" asp-validation-for="Channel.Title"></span>
+                <input class="form-control" asp-for="Topic.Title" />
+                <span class="form-text" asp-validation-for="Topic.Title"></span>
             </div>
         </div>
         <div class="mb-3 row">
             <div>
-                <label class="form-label" asp-for="Channel.Body"></label>
+                <label class="form-label" asp-for="Topic.Body"></label>
             </div>
             <div class="col">
-                <textarea class="form-control" asp-for="Channel.Body" rows="5"></textarea>
-                <span class="form-text" asp-validation-for="Channel.Body"></span>
+                <textarea class="form-control" asp-for="Topic.Body" rows="5"></textarea>
+                <span class="form-text" asp-validation-for="Topic.Body"></span>
             </div>
         </div>
         <div class="row">

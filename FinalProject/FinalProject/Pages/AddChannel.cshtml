@@ -1,46 +1,47 @@
-﻿@page 
+﻿@page
+
 @model FinalProject.Pages.Shared.AddChannelModel
 @{
 }
 
-<div class="col-md-4"><h1>Channel Settings</h1></div>
+<div class="col-md-4"><h1>Add Channel</h1></div>
 
 <br>
 <br>
-
-<div class="col-md-12 col-sm-12 mx-auto mb-5">
-    <form method="post">
-        <div class="mb-3 row">
-            <div class="col-sm-4 text-sm-end align-self-center">
-                <label class="form-label" asp-for="NewChannel.Title"></label>
+@if (@Model.IsAdmin)
+{
+    <div class="col-md-12 col-sm-12 mx-auto mb-5">
+        <form method="post">
+            <div class="mb-3 row">
+                <div>
+                    <label class="form-label" asp-for="NewChannel.Title"></label>
+                </div>
+                <div class="col">
+                    <input class="form-control" asp-for="NewChannel.Title" />
+                    <span class="form-text" asp-validation-for="NewChannel.Title"></span>
+                </div>
             </div>
-            <div class="col">
-                <input class="form-control" asp-for="NewChannel.Title" />
-                <span class="form-text" asp-validation-for="NewChannel.Title"></span>
+            <div class="mb-3 row">
+                <div>
+                    <label class="form-label" asp-for="NewChannel.Body"></label>
+                </div>
+                <div class="col">
+                    <textarea class="form-control" asp-for="NewChannel.Body" rows="5"></textarea>
+                    <span class="form-text" asp-validation-for="NewChannel.Body"></span>
+                </div>
             </div>
-        </div>
-        <div class="mb-3 row">
-            <div class="col-sm-4 text-sm-end align-self-center">
-                <label class="form-label" asp-for="NewChannel.Body"></label>
+            <div class="row">
+                <div class="col-8">
+                    <button type="submit" class="btn btn-outline-info">Add Channel</button>
+                    <a asp-page="./Index">
+                        <input type="button" class="btn btn-outline-secondary" value="Cancel" />
+                    </a>
+                </div>
             </div>
-            <div class="col">
-                <textarea class="form-control" asp-for="NewChannel.Body" rows="5"></textarea>
-                <span class="form-text" asp-validation-for="NewChannel.Body"></span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4 text-sm-end align-self-center">
-            </div>
-            <div class="col-8">
-                <button type="submit" class="btn btn-outline-info">Add Channel</button>
-                <a asp-page="./Index">
-                    <input type="button" class="btn btn-outline-secondary" value="Cancel" />
-                </a>
-            </div>
-        </div>
-    </form>
+        </form>
     </div>
+}
 
-    @section scripts{
-        <partial name="_ValidationScriptsPartial" />
-    }
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

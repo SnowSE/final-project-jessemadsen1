@@ -6,6 +6,7 @@ using FinalProject.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 
 namespace FinalProject.Pages.Shared
 {
@@ -13,17 +14,23 @@ namespace FinalProject.Pages.Shared
     public class AddChannelModel : PageModel
     {
         private readonly ApplicationDbContext _dbContext;
-        public AddChannelModel(ApplicationDbContext dbContext)
+        private readonly IAuthorizationService authorizationService;
+        private readonly ILogger<IndexModel> log;
+        public AddChannelModel(ApplicationDbContext dbContext, ILogger<IndexModel> log, IAuthorizationService authorizationService)
         {
             this._dbContext = dbContext;
+            this.authorizationService = authorizationService;
+            this.log = log;
         }
-        public void OnGet()
+        public async Task OnGetAsync()
         {
+            var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
+            IsAdmin = authResult.Succeeded;
         }
 
         [BindProperty]
         public Channel NewChannel { get; set; }
-
+        public bool IsAdmin { get; private set; }
         public async Task<IActionResult> OnPostAsync()
         {
             NewChannel.Slug = NewChannel.Title.GenerateSlug();
@@ -31,6 +38,7 @@ namespace FinalProject.Pages.Shared
             {
                 await _dbContext.Channels.AddAsync(NewChannel);
                 await _dbContext.SaveChangesAsync();
+                log.LogInformation("New Channel Created by: {AdminName}", User.Identity.Name);
                 return RedirectToPage("./Index");
             }
             return Page();

@@ -6,32 +6,39 @@ using FinalProject.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 
 namespace FinalProject.Pages
 {
+    [Authorize]
     public class AddTopicModel : PageModel
     {
-        private readonly ApplicationDbContext dbContext;
 
+        private readonly ApplicationDbContext _dbContext;
+        private readonly IAuthorizationService authorizationService;
+        private readonly ILogger<IndexModel> log;
 
-        public AddTopicModel(ApplicationDbContext dbContext)
+        public AddTopicModel(ApplicationDbContext dbContext, ILogger<IndexModel> log, IAuthorizationService authorizationService)
         {
-            this.dbContext = dbContext;
+            this.authorizationService = authorizationService;
+            this._dbContext = dbContext;
+            this.log = log;
         }
 
-        public IActionResult OnGet(Channel channel)
+        public async Task OnGetAsync(Channel channel)
         {
+            var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
+            IsAdmin = authResult.Succeeded;
+
             Channel = channel;
-            ViewData["ChannelID"] = new SelectList(dbContext.Channels, "ID", "Title");
             MyGlobalVariables.LastRoute = Request.Headers["Referer"].ToString();
-            return Page();
         }
 
         [BindProperty]
         public Topic NewTopic { get; set; }
         [BindProperty]
         public Channel Channel { get; set; }
+        public bool IsAdmin { get; private set;}
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -39,8 +46,9 @@ namespace FinalProject.Pages
             NewTopic.ChannelId = Channel.ID;
             if (ModelState.IsValid)
             {
-                await dbContext.Topics.AddAsync(NewTopic);
-                await dbContext.SaveChangesAsync();
+                await _dbContext.Topics.AddAsync(NewTopic);
+                await _dbContext.SaveChangesAsync();
+                log.LogInformation("New Topic Created by: {AdminName} To {Channel}", User.Identity.Name, Channel.Title);
                 return Redirect(MyGlobalVariables.LastRoute);
             }
             return Page();

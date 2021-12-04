@@ -4,43 +4,45 @@
 @{
 }
 
-
 <div class="col-md-4">
-    <h1>Topic Settings</h1>
+    <h2>Add Topic to @Model.Channel.Title</h2>
 </div>
 <br>
 <br>
-<div class="col-md-12 col-sm-12 mx-auto mb-5">
-    <form method="post">
-
-        <div class="mb-3 row">
-            <div class="col-sm-4 text-sm-end align-self-center">
-                <label asp-for="NewTopic.Title" class="form-label"></label>
+@if (@Model.IsAdmin)
+{
+    <div class="col-md-12 col-sm-12 mx-auto mb-5">
+        <form method="post">
+            <div class="mb-3 row">
+                <div>
+                    <label asp-for="NewTopic.Title" class="form-label"></label>
+                </div>
+                <div class="col">
+                    <input asp-for="NewTopic.Title" class="form-control" />
+                    <span asp-validation-for="NewTopic.Title" class="text-danger"></span>
+                </div>
             </div>
-            <div class="col">
-                <input asp-for="NewTopic.Title" class="form-control" />
-                <span asp-validation-for="NewTopic.Title" class="text-danger"></span>
+            <div class="mb-3 row">
+                <div>
+                    <label class="form-label" asp-for="NewTopic.Body"></label>
+                </div>
+                <div class="col">
+                    <textarea class="form-control" asp-for="NewTopic.Body" rows="5"></textarea>
+                    <span class="form-text" asp-validation-for="NewTopic.Body"></span>
+                </div>
             </div>
-        </div>
-        <div class="mb-3 row">
-            <div class="col-sm-4 text-sm-end align-self-center">
-                <label class="form-label" asp-for="NewTopic.Body"></label>
+            <div class="row">
+                <div class="col-8">
+                    <button type="submit" class="btn btn-outline-info">Add Topic</button>
+                    <a asp-page="./Index">
+                        <input type="button" class="btn btn-outline-secondary" value="Cancel" />
+                    </a>
+                </div>
             </div>
-            <div class="col">
-                <textarea class="form-control" asp-for="NewTopic.Body" rows="5"></textarea>
-                <span class="form-text" asp-validation-for="NewTopic.Body"></span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4 text-sm-end align-self-center"></div>
-            <div class="col-8">
-                <button type="submit" class="btn btn-outline-primary">Add Topic</button>
-            </div>
-        </div>
-    </form>
-</div>
-
-@section scripts{
-
-    <partial name="_ValidationScriptsPartial" />
+        </form>
+    </div>
 }
+    @section scripts{
+
+        <partial name="_ValidationScriptsPartial" />
+    }

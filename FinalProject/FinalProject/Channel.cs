@@ -25,7 +25,7 @@ namespace FinalProject
         [StringLength(100)]
         public string Title { get; set; }
 
-        [Required]
+        [Required, Display(Name = "Description")]
         [StringLength(280)]
         public string Body
         {
@@ -45,7 +45,7 @@ namespace FinalProject
         [StringLength(100)]
         public string Title { get; set; }
 
-        [Required]
+        [Required, Display(Name = "Description")]
         [StringLength(280)]
         public string Body
         {
@@ -71,7 +71,7 @@ namespace FinalProject
 
         public string Author { get; set; }
 
-        [Required]
+        [Required, Display(Name = "Post")]
         [StringLength(280)]
         public string Body
         {

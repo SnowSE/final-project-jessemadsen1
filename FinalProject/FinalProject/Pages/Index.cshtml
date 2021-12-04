@@ -23,9 +23,9 @@
 
 
     <div class="col-md-8">
-        <h3>
+        <h2>
             <a asp-page="./TopicDetails" asp-route-slug="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
-        </h3>
+        </h2>
     </div>
 
 
@@ -35,16 +35,14 @@
         <div class="col-md-6 col-sm-12  mb-5">
             <div>
                 <a asp-page="./EditChannel" asp-route-id="@item.ID">
-                    <input type="button" class="btn btn-outline-info" value="Edit" />
+                    <input type="button" class="btn btn-outline-success" value="Edit" />
                 </a>
                 <a asp-page="./DeleteChannel" asp-route-id="@item.ID">
-                    <input type="button" class="btn btn-outline-secondary" value="Delete" />
+                    <input type="button" class="btn btn-outline-danger" value="Delete" />
                 </a>
             </div>
         </div>
 
     }
-
-
     <hr>
 }
