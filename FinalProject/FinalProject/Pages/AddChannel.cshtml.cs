@@ -12,10 +12,10 @@ namespace FinalProject.Pages.Shared
     [Authorize]
     public class AddChannelModel : PageModel
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly ApplicationDbContext _dbContext;
         public AddChannelModel(ApplicationDbContext dbContext)
         {
-            this.dbContext = dbContext;
+            this._dbContext = dbContext;
         }
         public void OnGet()
         {
@@ -29,8 +29,8 @@ namespace FinalProject.Pages.Shared
             NewChannel.Slug = NewChannel.Title.GenerateSlug();
             if (ModelState.IsValid)
             {
-                await dbContext.Channels.AddAsync(NewChannel);
-                await dbContext.SaveChangesAsync();
+                await _dbContext.Channels.AddAsync(NewChannel);
+                await _dbContext.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
             return Page();
