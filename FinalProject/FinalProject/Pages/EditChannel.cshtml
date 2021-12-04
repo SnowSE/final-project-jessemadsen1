@@ -1,0 +1,46 @@
+﻿@page
+@model FinalProject.Pages.EditChannelModel
+@{
+}
+<div class="col-md-4"><h2>@Model.Channel.Title</h2></div>
+
+<br>
+<br>
+
+<div class="col-md-12 col-sm-12 mx-auto mb-5">
+    <form method="post">
+        <input type="hidden" asp-for="Channel.ID" />
+        <div class="mb-3 row">
+            <div class="col-sm-4 text-sm-end align-self-center">
+                <label class="form-label" asp-for="Channel.Title"></label>
+            </div>
+            <div class="col">
+                <input class="form-control" asp-for="Channel.Title" />
+                <span class="form-text" asp-validation-for="Channel.Title"></span>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <div class="col-sm-4 text-sm-end align-self-center">
+                <label class="form-label" asp-for="Channel.Body"></label>
+            </div>
+            <div class="col">
+                <textarea class="form-control" asp-for="Channel.Body" rows="5"></textarea>
+                <span class="form-text" asp-validation-for="Channel.Body"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 text-sm-end align-self-center">
+            </div>
+            <div class="col-8">
+                <button type="submit" class="btn btn-outline-info">Save Edit</button>
+                <a asp-page="./Index">
+                    <input type="button" class="btn btn-outline-secondary" value="Cancel" />
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
