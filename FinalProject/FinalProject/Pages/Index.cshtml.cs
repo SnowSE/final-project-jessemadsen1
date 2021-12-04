@@ -16,10 +16,11 @@ namespace FinalProject.Pages
         private readonly IAuthorizationService authorizationService;
         private readonly ILogger<IndexModel> log;
 
-        public IndexModel(FinalProject.Data.ApplicationDbContext dbContext, IAuthorizationService authorizationService)
+        public IndexModel(FinalProject.Data.ApplicationDbContext dbContext, IAuthorizationService authorizationService, ILogger<IndexModel> log)
         {
             _dbContext = dbContext;
             this.authorizationService = authorizationService;
+            this.log = log;
         }
         public IList<Channel> Channels { get; set; }
         public bool CanEdit { get; private set; }
@@ -34,13 +35,12 @@ namespace FinalProject.Pages
 
             var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
             IsAdmin = authResult.Succeeded;
+            if (IsAdmin)
+            {
+            log.LogInformation("Admin Logged in: {AdminName}", User.Identity.Name);
+            }
         }
-        public IActionResult OnPostAddParent()
-        {
-            //log.LogInformation("Adding new parent: {parent}", ParentName);
-            //itemManager.TopLevelItems.Add(new ParentItem { Name = ParentName });
-            return RedirectToPage();
-        }
+
 
     }
 }
