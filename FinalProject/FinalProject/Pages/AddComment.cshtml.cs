@@ -2,32 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FinalProject.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using FinalProject;
-using FinalProject.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+
 
 namespace FinalProject.Pages
 {
     public class AddCommentModel : PageModel
     {
-        private readonly FinalProject.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly ILogger<AddPostModel> log;
 
-        public AddCommentModel(FinalProject.Data.ApplicationDbContext context)
+
+        public AddCommentModel(ApplicationDbContext dbContext, ILogger<AddPostModel> log)
         {
-            _context = context;
+            this._dbContext = dbContext;
+            this.log = log;
         }
 
-        public IActionResult OnGet()
-        {
-            ViewData["PostId"] = new SelectList(_context.Posts, "ID", "Title");
-            MyGlobalVariables.LastRoute = Request.Headers["Referer"].ToString();
-            return Page();
-        }
 
         [BindProperty]
         public Comment Comment { get; set; }
+        [BindProperty]
+        public Post Post { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -36,16 +37,22 @@ namespace FinalProject.Pages
             var currentUserName = claim.Value;
             Comment.Author = currentUserName;
             Comment.PostedOn = System.DateTime.Now;
+            Comment.PostId = Post.ID;
 
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Comments.Add(Comment);
-            await _context.SaveChangesAsync();
+            _dbContext.Comments.Add(Comment);
+            await _dbContext.SaveChangesAsync();
 
             return RedirectToPage("./Details",new { slug = MyGlobalVariables.LastRoute.Split('/').Last() });
+        }
+        public async Task OnGetAsync(int ID)
+        {
+            Post = await _dbContext.Posts.FirstOrDefaultAsync(m => m.ID == ID);
+            MyGlobalVariables.LastRoute = Request.Headers["Referer"].ToString();
         }
     }
 }

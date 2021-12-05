@@ -14,12 +14,12 @@ namespace FinalProject.Pages
 {
     public class DetailsModel : PageModel
     {
-        private readonly FinalProject.Data.ApplicationDbContext _context;
+        private readonly FinalProject.Data.ApplicationDbContext _dbcontext;
         private readonly IAuthorizationService authorizationService;
 
         public DetailsModel(FinalProject.Data.ApplicationDbContext context, IAuthorizationService authorizationService)
         {
-            _context = context;
+            _dbcontext = context;
             this.authorizationService = authorizationService;
         }
 
@@ -41,11 +41,11 @@ namespace FinalProject.Pages
                 return NotFound();
             }
 
-            Post = await _context.Posts
+            Post = await _dbcontext.Posts
                 .Include(p => p.Comments)
                 .FirstOrDefaultAsync(m => m.Slug.ToLower() == child.ToLower());
 
-            ViewData["PostId"] = new SelectList(_context.Posts, "ID", "Title");
+            ViewData["PostId"] = new SelectList(_dbcontext.Posts, "ID", "Title");
 
             if (child == null)
             {
@@ -53,38 +53,41 @@ namespace FinalProject.Pages
             }
             return Page();
         }
-        public async Task<IActionResult> OnPostAsync(int commentId, string slug)
-        {
-            var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
-            var currentUserName = claim.Value;
-            Comment.Author = currentUserName;
+        //public async Task<IActionResult> OnPostAsync(int commentId, string slug)
+        //{
+        //    var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+        //    var currentUserName = claim.Value;
+        //    Comment.Author = currentUserName;
 
-            if (!ModelState.IsValid)
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return Page();
+        //    }
+
+        //    _dbcontext.Comments.Add(Comment);
+        //    await _dbcontext.SaveChangesAsync();
+
+        //    return RedirectToPage(new { slug = slug });
+        //}
+
+
+        public async Task<IActionResult> OnPostAddComment(string slug)
+        {
+            if (slug == null)
             {
-                return Page();
+                return NotFound();
             }
 
-            _context.Comments.Add(Comment);
-            await _context.SaveChangesAsync();
+            Post = await _dbcontext.Posts
+                .FirstOrDefaultAsync(m => m.Slug.ToLower() == slug.ToLower());
 
-            return RedirectToPage(new { slug = slug });
-        }
 
-        public async Task<IActionResult> OnPostDeleteComment(int commentid)
-        {
-            var comment = await _context.Comments.FindAsync(commentid);
-            return RedirectToPage("./DeleteComment", new {id = commentid});
-        }
+            if (Post == null)
+            {
+                return NotFound();
+            }
 
-        public async Task<IActionResult> OnPostEditComment(int commentid)
-        {
-            var comment = await _context.Comments.FindAsync(commentid);
-            return RedirectToPage("./EditComment", new { id = commentid });
-        }
-        public async Task<IActionResult> OnPostAddComment(int commentid)
-        {
-            var comment = await _context.Comments.FindAsync(commentid);
-            return RedirectToPage("./EditComment", new { id = commentid });
+            return RedirectToPage("./AddComment", Post);
         }
     }
 }
