@@ -31,6 +31,7 @@ namespace FinalProject.Pages
         public bool CanEdit { get; private set; }
         public bool IsAdmin { get; private set; }
 
+
         public async Task<IActionResult> OnGetAsync(string child)
         {
             var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
@@ -44,8 +45,6 @@ namespace FinalProject.Pages
             Post = await _dbcontext.Posts
                 .Include(p => p.Comments)
                 .FirstOrDefaultAsync(m => m.Slug.ToLower() == child.ToLower());
-
-            ViewData["PostId"] = new SelectList(_dbcontext.Posts, "ID", "Title");
 
             if (child == null)
             {

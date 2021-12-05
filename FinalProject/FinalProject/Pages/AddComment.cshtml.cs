@@ -29,13 +29,16 @@ namespace FinalProject.Pages
         public Comment Comment { get; set; }
         [BindProperty]
         public Post Post { get; set; }
+        public Author Author { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
             var currentUserName = claim.Value;
-            Comment.Author = currentUserName;
+            Author = await _dbContext.Author.FirstOrDefaultAsync(m => m.UserName == currentUserName);
+            Comment.Author = Author.UserName;
+            Comment.AvatarFileName = Author.AvatarFileName;
             Comment.PostedOn = System.DateTime.Now;
             Comment.PostId = Post.ID;
 
@@ -47,11 +50,12 @@ namespace FinalProject.Pages
             _dbContext.Comments.Add(Comment);
             await _dbContext.SaveChangesAsync();
 
-            return RedirectToPage("./Details",new { slug = MyGlobalVariables.LastRoute.Split('/').Last() });
+            return RedirectToPage("./Index");
         }
         public async Task OnGetAsync(int ID)
         {
             Post = await _dbContext.Posts.FirstOrDefaultAsync(m => m.ID == ID);
+
             MyGlobalVariables.LastRoute = Request.Headers["Referer"].ToString();
         }
     }

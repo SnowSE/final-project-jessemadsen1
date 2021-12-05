@@ -29,7 +29,7 @@
         {
             <div class="col-md-6 col-sm-12  mb-5">
                 <a asp-page="./AddComment" asp-route-ID="@Model.Post.ID">
-                    <input type="button" class="btn btn-outline-info" value="Add Channel" />
+                    <input type="button" class="btn btn-outline-info" value="Add Comment" />
                 </a>
             </div>
 
@@ -37,7 +37,7 @@
         @if (Model.IsAdmin)
         {
 
-            <div class="col-md-6 col-sm-12  mb-5">
+            @*<div class="col-md-6 col-sm-12  mb-5">
                 <div>
                     <a asp-page="./EditPost" asp-route-id="@Model.Post.ID">
                         <input type="button" class="btn btn-outline-success" value="Edit" />
@@ -46,7 +46,7 @@
                         <input type="button" class="btn btn-outline-danger" value="Delete" />
                     </a>
                 </div>
-            </div>
+            </div>*@
 
         }
 
@@ -107,7 +107,7 @@
             <hr>
             <br>
             <p>@comment.Body</p>
-            <p>Posted by:  @comment.Author    @comment.PostedOn   </p>
+            <p> <img src="/images/@comment.AvatarFileName" width="30"> @comment.Author    @comment.PostedOn   </p>
 
             @if (Model.IsAdmin || this.User.Identity.IsAuthenticated)
             {

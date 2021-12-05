@@ -96,6 +96,7 @@ namespace FinalProject
         public int ID { get; set; }
 
         public string Author { get; set; }
+        public string? AvatarFileName { get; set; }
 
         [Required]
         [StringLength(500)]
