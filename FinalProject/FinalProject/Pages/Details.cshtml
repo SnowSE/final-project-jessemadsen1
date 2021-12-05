@@ -28,8 +28,15 @@
         @if (this.User.Identity.IsAuthenticated)
         {
 
-            <a asp-page="./AddComment">Add comment</a>
-            <span> | </span>
+            <div>
+                <form method="post" asp-page="AddComment" asp-route-id="@Model.Post.ID">
+                    <div class="col-md-6 col-sm-12  mb-5">
+                        <div class="col-8">
+                            <button type="submit" class="btn btn-outline-info">Add Comment</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
         }
         @if (Model.IsAdmin)
