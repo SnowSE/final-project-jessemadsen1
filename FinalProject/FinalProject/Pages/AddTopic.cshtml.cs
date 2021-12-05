@@ -16,9 +16,9 @@ namespace FinalProject.Pages
 
         private readonly ApplicationDbContext _dbContext;
         private readonly IAuthorizationService authorizationService;
-        private readonly ILogger<IndexModel> log;
+        private readonly ILogger<AddTopicModel> log;
 
-        public AddTopicModel(ApplicationDbContext dbContext, ILogger<IndexModel> log, IAuthorizationService authorizationService)
+        public AddTopicModel(ApplicationDbContext dbContext, ILogger<AddTopicModel> log, IAuthorizationService authorizationService)
         {
             this.authorizationService = authorizationService;
             this._dbContext = dbContext;

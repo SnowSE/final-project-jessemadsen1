@@ -14,8 +14,8 @@ namespace FinalProject.Pages
     public class DeleteTopicModel : PageModel
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly ILogger<IndexModel> log;
-        public DeleteTopicModel(ApplicationDbContext dbContext, ILogger<IndexModel> log)
+        private readonly ILogger<DeleteTopicModel> log;
+        public DeleteTopicModel(ApplicationDbContext dbContext, ILogger<DeleteTopicModel> log)
         {
             this._dbContext = dbContext;
             this.log = log;

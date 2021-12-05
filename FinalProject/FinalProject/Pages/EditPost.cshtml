@@ -1,0 +1,47 @@
+﻿@page
+@model FinalProject.Pages.EditPostModel
+@{
+}
+<div class="col-md-4"><h2>@Model.Post.Title</h2></div>
+
+<br>
+<br>
+
+<div class="col-md-12 col-sm-12 mx-auto mb-5">
+    <form method="post">
+        <input type="hidden" asp-for="Post.ID" />
+        <input type="hidden" asp-for="Post.TopicId" />
+        <input type="hidden" asp-for="Topic.ID" />
+        <input type="hidden" asp-for="Topic.Title" />
+        <div class="mb-3 row">
+            <div>
+                <label class="form-label" asp-for="Post.Title"></label>
+            </div>
+            <div class="col">
+                <input class="form-control" asp-for="Post.Title" />
+                <span class="form-text" asp-validation-for="Post.Title"></span>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <div>
+                <label class="form-label" asp-for="Post.Body"></label>
+            </div>
+            <div class="col">
+                <textarea class="form-control" asp-for="Post.Body" rows="5"></textarea>
+                <span class="form-text" asp-validation-for="Post.Body"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <button type="submit" class="btn btn-outline-info">Save Edit</button>
+                <a asp-page="./Index">
+                    <input type="button" class="btn btn-outline-secondary" value="Cancel" />
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

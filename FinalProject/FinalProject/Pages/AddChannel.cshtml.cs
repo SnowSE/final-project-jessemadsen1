@@ -15,8 +15,8 @@ namespace FinalProject.Pages.Shared
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IAuthorizationService authorizationService;
-        private readonly ILogger<IndexModel> log;
-        public AddChannelModel(ApplicationDbContext dbContext, ILogger<IndexModel> log, IAuthorizationService authorizationService)
+        private readonly ILogger<AddChannelModel> log;
+        public AddChannelModel(ApplicationDbContext dbContext, ILogger<AddChannelModel> log, IAuthorizationService authorizationService)
         {
             this._dbContext = dbContext;
             this.authorizationService = authorizationService;

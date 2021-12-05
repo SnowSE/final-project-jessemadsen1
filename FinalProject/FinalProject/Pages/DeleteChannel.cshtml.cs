@@ -14,8 +14,8 @@ namespace FinalProject.Pages
     public class DeleteChannelModel : PageModel
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly ILogger<IndexModel> log;
-        public DeleteChannelModel(ApplicationDbContext dbContext, ILogger<IndexModel> log)
+        private readonly ILogger<DeleteChannelModel> log;
+        public DeleteChannelModel(ApplicationDbContext dbContext, ILogger<DeleteChannelModel> log)
         {
             this._dbContext = dbContext;
             this.log = log;

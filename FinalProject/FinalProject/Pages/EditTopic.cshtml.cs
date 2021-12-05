@@ -14,8 +14,8 @@ namespace FinalProject.Pages
     public class EditTopicModel : PageModel
     {
         private readonly ApplicationDbContext dbContext;
-        private readonly ILogger<IndexModel> log;
-        public EditTopicModel(ApplicationDbContext dbContext, ILogger<IndexModel> log)
+        private readonly ILogger<EditTopicModel> log;
+        public EditTopicModel(ApplicationDbContext dbContext, ILogger<EditTopicModel> log)
         {
             this.dbContext = dbContext;
             this.log = log;

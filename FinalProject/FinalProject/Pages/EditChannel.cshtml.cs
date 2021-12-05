@@ -14,8 +14,8 @@ namespace FinalProject.Pages
     public class EditChannelModel : PageModel
     {
         private readonly ApplicationDbContext dbContext;
-        private readonly ILogger<IndexModel> log;
-        public EditChannelModel(ApplicationDbContext dbContext, ILogger<IndexModel> log)
+        private readonly ILogger<EditChannelModel> log;
+        public EditChannelModel(ApplicationDbContext dbContext, ILogger<EditChannelModel> log)
         {
             this.dbContext = dbContext;
             this.log = log;

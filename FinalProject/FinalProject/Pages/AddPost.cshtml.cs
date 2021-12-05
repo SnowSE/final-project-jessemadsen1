@@ -14,8 +14,8 @@ namespace FinalProject.Pages
     public class AddPostModel : PageModel
     {
         private readonly ApplicationDbContext dbContext;
-        private readonly ILogger<IndexModel> log;
-        public AddPostModel(ApplicationDbContext dbContext, ILogger<IndexModel> log)
+        private readonly ILogger<AddPostModel> log;
+        public AddPostModel(ApplicationDbContext dbContext, ILogger<AddPostModel> log)
         {
             this.dbContext = dbContext;
             this.log = log;
