@@ -34,11 +34,17 @@
         }
         @if (Model.IsAdmin)
         {
-            @*
-                <a asp-page="./Edit" asp-route-ID="Model.Post.ID">Edit</a>
-                <span> | </span>
-                <a asp-page="./Delete" asp-route-ID="Model.Post.ID">Delete</a>
-                <span> | </span>*@
+
+            <div class="col-md-6 col-sm-12  mb-5">
+                <div>
+                    <a asp-page="./EditPost" asp-route-id="@Model.Post.ID">
+                        <input type="button" class="btn btn-outline-success" value="Edit" />
+                    </a>
+                    <a asp-page="./DeletePost" asp-route-id="@Model.Post.ID">
+                        <input type="button" class="btn btn-outline-danger" value="Delete" />
+                    </a>
+                </div>
+            </div>
 
         }
 

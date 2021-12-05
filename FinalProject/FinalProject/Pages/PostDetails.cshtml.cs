@@ -33,7 +33,7 @@ namespace FinalProject.Pages
             public bool IsAdmin { get; private set; }
 
         public Topic Topic { get; set; }
-
+        public Channel Channel { get; set; }
         public async Task<IActionResult> OnGetAsync(string child)
         {
             var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
@@ -47,8 +47,10 @@ namespace FinalProject.Pages
             Topic = await _dbContext.Topics
                 .Include(p => p.Posts)
                 .FirstOrDefaultAsync(m => m.Slug.ToLower() == child.ToLower());
+            Channel = await _dbContext.Channels
+                .Include(p => p.Topics)
+                .FirstOrDefaultAsync(m => m.ID == Topic.ChannelId);
 
-            //ViewData["TopicId"] = new SelectList(_dbContext.Topics, "ID", "Title");
 
             if (Topic == null)
             {
@@ -58,26 +60,23 @@ namespace FinalProject.Pages
         }
 
 
-        //public async Task<IActionResult> OnGetAsync(string slug)
-        //{
-        //    var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
-        //    IsAdmin = authResult.Succeeded;
+        public async Task<IActionResult> OnPostAddPost(string slug)
+        {
+            if (slug == null)
+            {
+                return NotFound();
+            }
 
-        //    if (slug == null)
-        //    {
-        //        return NotFound();
-        //    }
+            Topic = await _dbContext.Topics
+                .FirstOrDefaultAsync(m => m.Slug.ToLower() == slug.ToLower());
 
-        //Posts = await _dbContext.Posts.ToListAsync();
+            if (Topic == null)
+            {
+                return NotFound();
+            }
 
-        //ViewData["PostId"] = new SelectList(_dbContext.Posts, "ID", "Title");
-
-        //    if (slug == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Page();
-        //}
+            return RedirectToPage("./AddPost", Topic);
+        }
         public async Task<IActionResult> OnPostAsync(int commentId, string slug)
             {
                 var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");

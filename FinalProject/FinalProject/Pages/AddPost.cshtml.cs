@@ -6,7 +6,7 @@ using FinalProject.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 
 namespace FinalProject.Pages
 {
@@ -14,36 +14,41 @@ namespace FinalProject.Pages
     public class AddPostModel : PageModel
     {
         private readonly ApplicationDbContext dbContext;
-        public AddPostModel(ApplicationDbContext dbContext)
+        private readonly ILogger<IndexModel> log;
+        public AddPostModel(ApplicationDbContext dbContext, ILogger<IndexModel> log)
         {
             this.dbContext = dbContext;
+            this.log = log;
         }
 
 
         [BindProperty]
         public Post NewPost { get; set; }
-
+        [BindProperty]
+        public Topic Topic { get; set; }
         public async Task<IActionResult> OnPostAsync()
         {
             var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
             var currentUserName = claim.Value;
             NewPost.Author = currentUserName;
             NewPost.PostedOn = System.DateTime.Now;
-
+            NewPost.TopicId = Topic.ID;
             NewPost.Slug = NewPost.Title.GenerateSlug();
+            
 
             if (ModelState.IsValid)
             {
                 await dbContext.Posts.AddAsync(NewPost);
                 await dbContext.SaveChangesAsync();
-                return RedirectToPage("./Details", new { slug = NewPost.Slug });
+                log.LogInformation("New Post Created by: {Name} To {Topic}", User.Identity.Name, Topic.Title);
+                return Redirect(MyGlobalVariables.LastRoute);
             }
             return Page();
         }
-        public IActionResult OnGet()
+        public void OnGet(Topic topic)
         {
-            ViewData["TopicID"] = new SelectList(dbContext.Topics, "ID", "Title");
-            return Page();
+            Topic = topic;
+            MyGlobalVariables.LastRoute = Request.Headers["Referer"].ToString();
         }
     }
 }

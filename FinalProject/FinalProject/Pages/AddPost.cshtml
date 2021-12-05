@@ -2,24 +2,20 @@
 @model FinalProject.Pages.AddPostModel
 @{
 }
-<div class="col-md-12 col-sm-12 mx-auto mb-5">
-    <h1><small class="text-muted">Add New Post</small></h1>
-    <br>
-    <br>
+<div class="col-md-4">
+    <h2>Add Post to @Model.Topic.Title</h2>
 </div>
+<br>
+<br>
 
 <div class="col-md-12 col-sm-12 mx-auto mb-5">
     <form method="post">
+        <input type="hidden" asp-for="Topic.ID" />
+        <input type="hidden" asp-for="Topic.Title" />
+        <input type="hidden" asp-for="Topic.Body" />
+        <input type="hidden" asp-for="Topic.Slug" />
         <div class="mb-3 row">
-            <div class="col-sm-4 text-sm-end align-self-center">
-                <label asp-for="NewPost.TopicId" class="form-label"></label>
-            </div>
-            <div class="col">
-                <select asp-for="NewPost.TopicId" class="form-control" asp-items="ViewBag.TopicId"></select>
-            </div>
-        </div>
-        <div class="mb-3 row">
-            <div class="col-sm-4 text-sm-end align-self-center">
+            <div>
                 <label class="form-label" asp-for="NewPost.Title"></label>
             </div>
             <div class="col">
@@ -28,7 +24,7 @@
             </div>
         </div>
         <div class="mb-3 row">
-            <div class="col-sm-4 text-sm-end align-self-center">
+            <div>
                 <label class="form-label" asp-for="NewPost.Body"></label>
             </div>
             <div class="col">
@@ -37,10 +33,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-4 text-sm-end align-self-center">
-            </div>
             <div class="col-8">
-                <button type="submit" class="btn btn-outline-primary">Add Post</button>
+                <button type="submit" class="btn btn-outline-info">Add Post</button>
+                <a asp-page="./Index">
+                    <input type="button" class="btn btn-outline-secondary" value="Cancel" />
+                </a>
             </div>
         </div>
     </form>

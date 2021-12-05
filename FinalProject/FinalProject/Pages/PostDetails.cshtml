@@ -9,11 +9,16 @@
 
 <p><em>@Html.DisplayFor(modelItem => Model.Topic.Body)</em></p>
 
-<p>
-    <a asp-page="AddPost">Add New Post</a>
-    <hr>
-    <br>
-</p>
+<div>
+    <form method="post" asp-page-handler="AddPost" asp-route-slug="@Model.Topic.Slug">
+        <div class="col-md-6 col-sm-12  mb-5">
+            <div class="col-8">
+                <button type="submit" class="btn btn-outline-info">Add New Post</button>
+            </div>
+        </div>
+    </form>
+</div>
+
 
 
 @foreach (var item in Model.Topic.Posts)
@@ -21,17 +26,24 @@
 
     <div class="col-md-8">
         <h2>
-            <a asp-page="./Details"asp-route-slug="@item.Topic.Channel.Slug" asp-route-parent="@item.Topic.Slug" asp-route-child="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
+            <a asp-page="./Details" asp-route-slug="@item.Topic.Channel.Slug" asp-route-parent="@item.Topic.Slug" asp-route-child="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
         </h2>
 
     </div>
 
 
-    @if (Model.IsAdmin)
+    @if (User.Identity.Name == @item.Author || Model.IsAdmin)
     {
-        <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a>
-        <span> | </span>
-        <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+        <div class="col-md-6 col-sm-12  mb-5">
+            <div>
+                <a asp-page="./EditTopic" asp-route-id="@item.ID">
+                    <input type="button" class="btn btn-outline-success" value="Edit" />
+                </a>
+                <a asp-page="./DeleteTopic" asp-route-id="@item.ID">
+                    <input type="button" class="btn btn-outline-danger" value="Delete" />
+                </a>
+            </div>
+        </div>
 
     }
     <hr>
