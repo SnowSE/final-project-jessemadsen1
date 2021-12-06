@@ -8,16 +8,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalProject;
 using FinalProject.Data;
+using Microsoft.Extensions.Logging;
 
 namespace FinalProject.Pages
 {
     public class EditCommentModel : PageModel
     {
         private readonly FinalProject.Data.ApplicationDbContext _context;
+        private readonly ILogger<EditCommentModel> log;
 
-        public EditCommentModel(FinalProject.Data.ApplicationDbContext context)
+        public EditCommentModel(FinalProject.Data.ApplicationDbContext context, ILogger<EditCommentModel> log)
         {
             _context = context;
+            this.log = log;
         }
 
         [BindProperty]
@@ -32,12 +35,11 @@ namespace FinalProject.Pages
 
             Comment = await _context.Comments
                 .Include(c => c.Post).FirstOrDefaultAsync(m => m.ID == id);
-
+            MyGlobalVariables.LastRoute = Request.Headers["Referer"].ToString();
             if (Comment == null)
             {
                 return NotFound();
             }
-           ViewData["PostId"] = new SelectList(_context.Posts, "ID", "Body");
             return Page();
         }
 
@@ -71,7 +73,8 @@ namespace FinalProject.Pages
                 }
             }
 
-            return RedirectToPage("./Index");
+            log.LogInformation("Comment Edited by {User}", User.Identity.Name);
+            return Redirect(MyGlobalVariables.LastRoute);
         }
 
         private bool CommentExists(int id)

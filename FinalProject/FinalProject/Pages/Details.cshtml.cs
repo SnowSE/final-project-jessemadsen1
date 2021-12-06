@@ -74,7 +74,6 @@ namespace FinalProject.Pages
             return RedirectToPage(new { slug = slug });
         }
 
-
         public async Task<IActionResult> OnPostAddComment(string slug)
         {
             if (slug == null)

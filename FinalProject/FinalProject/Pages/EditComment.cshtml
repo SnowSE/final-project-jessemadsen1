@@ -11,19 +11,22 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Comment.ID" />
-            <div class="form-group">
-                <label asp-for="Comment.PostId" class="control-label"></label>
-                <select asp-for="Comment.PostId" class="form-control" asp-items="ViewBag.PostId"></select>
-                <span asp-validation-for="Comment.PostId" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="Comment.Author" />
+            <input type="hidden" asp-for="Comment.AvatarFileName" />
+            <input type="hidden" asp-for="Comment.PostId" />
             <div class="form-group">
                 <label asp-for="Comment.Body" class="control-label"></label>
                 <input asp-for="Comment.Body" class="form-control" />
                 <span asp-validation-for="Comment.Body" class="text-danger"></span>
             </div>
-            <br >
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <br>
+            <div class="row">
+                <div class="col-8">
+                    <button type="submit" class="btn btn-outline-info">Save Edit</button>
+                    <a asp-page="./Index">
+                        <input type="button" class="btn btn-outline-secondary" value="Cancel" />
+                    </a>
+                </div>
             </div>
         </form>
     </div>

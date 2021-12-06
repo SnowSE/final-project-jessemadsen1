@@ -7,30 +7,33 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using FinalProject;
 using FinalProject.Data;
+using Microsoft.Extensions.Logging;
 
 namespace FinalProject.Pages.Shared
 {
     public class DeleteCommentModel : PageModel
     {
-        private readonly FinalProject.Data.ApplicationDbContext _context;
-
-        public DeleteCommentModel(FinalProject.Data.ApplicationDbContext context)
+        private readonly FinalProject.Data.ApplicationDbContext _dbcontext;
+        private readonly ILogger<DeleteCommentModel> log;
+        public DeleteCommentModel(FinalProject.Data.ApplicationDbContext context, ILogger<DeleteCommentModel> log)
         {
-            _context = context;
+            _dbcontext = context;
+            this.log = log;
         }
 
         [BindProperty]
         public Comment Comment { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? ID)
         {
-            if (id == null)
+            if (ID == null)
             {
                 return NotFound();
             }
 
-            Comment = await _context.Comments
-                .Include(c => c.Post).FirstOrDefaultAsync(m => m.ID == id);
+
+            Comment = await _dbcontext.Comments
+                .Include(c => c.Post).FirstOrDefaultAsync(m => m.ID == ID);
 
             if (Comment == null)
             {
@@ -46,15 +49,16 @@ namespace FinalProject.Pages.Shared
                 return NotFound();
             }
 
-            Comment = await _context.Comments.FindAsync(id);
+            Comment = await _dbcontext.Comments.FindAsync(id);
 
             if (Comment != null)
             {
-                _context.Comments.Remove(Comment);
-                await _context.SaveChangesAsync();
+                _dbcontext.Comments.Remove(Comment);
+                await _dbcontext.SaveChangesAsync();
+                log.LogInformation("Comment deleted by {User}", User.Identity.Name);
+                return RedirectToPage("./DeleteCommentSuccessfull");
             }
-
-            return RedirectToPage("./Index");
+            return Page();
         }
     }
 }

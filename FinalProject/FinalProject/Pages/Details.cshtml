@@ -113,18 +113,21 @@
             <p>@comment.Body</p>
             <p> <img src="/images/@comment.AvatarFileName" width="30"> @comment.Author    @comment.PostedOn   </p>
 
-            @if (Model.IsAdmin || this.User.Identity.IsAuthenticated)
+            @if (Model.IsAdmin || User.Identity.Name == @comment.Author)
             {
 
-                <form method="post">
-                    <p>
-                        <button type="submit" class="btn btn-outline-info" asp-page-handler="EditComment" asp-route-commentId="@comment.ID">Edit</button> Edit Comment?
-
-                        @*<button type="submit" class="btn btn-outline-warning" asp-page-handler="HideComment" asp-route-commentId="@comment.ID" asp-route-partyName="@Model.Post.Title">Hide</button> Hide Comment?*@
-
-                        <button type="submit" class="btn btn-outline-danger" asp-page-handler="DeleteComment" asp-route-commentId="@comment.ID">Delete</button> Delete Comment?
-                    </p>
-                </form>
+                    <form method="post">
+                        <div class="col-md-6 col-sm-12  mb-5">
+                            <div>
+                                <a asp-page="./EditComment" asp-route-id="@comment.ID">
+                                    <input type="button" class="btn btn-outline-success" value="Edit" />
+                                </a>
+                                <a asp-page="./DeleteComment" asp-route-id="@comment.ID">
+                                    <input type="button" class="btn btn-outline-danger" value="Delete" />
+                                </a>
+                            </div>
+                        </div>
+                    </form>
             }
         }
     }
