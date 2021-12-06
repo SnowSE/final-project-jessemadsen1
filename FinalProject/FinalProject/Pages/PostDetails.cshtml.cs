@@ -27,10 +27,10 @@ namespace FinalProject.Pages
         public IList<Post> Posts { get; set; }
 
         [BindProperty]
-            public Comment Comment { get; set; }
+        public Comment Comment { get; set; }
 
-            public bool CanEdit { get; private set; }
-            public bool IsAdmin { get; private set; }
+        public bool CanEdit { get; private set; }
+        public bool IsAdmin { get; private set; }
 
         public Topic Topic { get; set; }
         public Channel Channel { get; set; }

@@ -25,7 +25,7 @@
     </p>
     <div>
 
-        @if (this.User.Identity.IsAuthenticated)
+        @if (this.User.Identity.IsAuthenticated && Model.Post.Comments.Count == 0)
         {
             <div class="col-md-6 col-sm-12  mb-5">
                 <a asp-page="./AddComment" asp-route-ID="@Model.Post.ID">
@@ -72,6 +72,10 @@
                                 <form method="post">
                                     <input type="hidden" name="commentId" value="@comment.ID" />
                                     <input type="hidden" name="Comment.PostId" value="@Model.Post.ID" />
+                                    <input type="hidden" asp-for="Post.ID" />
+                                    <input type="hidden" asp-for="Post.Title" />
+                                    <input type="hidden" asp-for="Post.Body" />
+                                    <input type="hidden" asp-for="Post.Slug" />
                                     <div class="row">
                                         <div class="col-md-4">
                                             <form method="post">

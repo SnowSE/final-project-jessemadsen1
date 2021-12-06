@@ -23,6 +23,7 @@ namespace FinalProject.Pages
             this.authorizationService = authorizationService;
         }
 
+        [BindProperty]
         public Post Post { get; set; }
 
         [BindProperty]
@@ -31,7 +32,7 @@ namespace FinalProject.Pages
         public bool CanEdit { get; private set; }
         public bool IsAdmin { get; private set; }
 
-
+        public Author Author { get; set; }
         public async Task<IActionResult> OnGetAsync(string child)
         {
             var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
@@ -52,22 +53,26 @@ namespace FinalProject.Pages
             }
             return Page();
         }
-        //public async Task<IActionResult> OnPostAsync(int commentId, string slug)
-        //{
-        //    var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
-        //    var currentUserName = claim.Value;
-        //    Comment.Author = currentUserName;
+        public async Task<IActionResult> OnPostAsync(int commentId, string slug)
+        {
+            var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+            var currentUserName = claim.Value;
+            Author = await _dbcontext.Author.FirstOrDefaultAsync(m => m.UserName == currentUserName);
+            Comment.Author = Author.UserName;
+            Comment.AvatarFileName = Author.AvatarFileName;
+            Comment.PostedOn = System.DateTime.Now;
+            Comment.PostId = Post.ID;
 
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return Page();
-        //    }
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
-        //    _dbcontext.Comments.Add(Comment);
-        //    await _dbcontext.SaveChangesAsync();
+            _dbcontext.Comments.Add(Comment);
+            await _dbcontext.SaveChangesAsync();
 
-        //    return RedirectToPage(new { slug = slug });
-        //}
+            return RedirectToPage(new { slug = slug });
+        }
 
 
         public async Task<IActionResult> OnPostAddComment(string slug)

@@ -50,7 +50,8 @@ namespace FinalProject.Pages
             _dbContext.Comments.Add(Comment);
             await _dbContext.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            //return RedirectToPage("./Details",new { slug = MyGlobalVariables.LastRoute.Split('/').Last() });
+            return RedirectToPage("./CommentAddRedirect");
         }
         public async Task OnGetAsync(int ID)
         {

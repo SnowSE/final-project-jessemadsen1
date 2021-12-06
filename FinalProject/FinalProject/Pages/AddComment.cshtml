@@ -7,33 +7,54 @@
 
 <h1>Create</h1>
 
-<h4>Comment</h4>
+<h3>Be the first to add comment</h3>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <input type="hidden" asp-for="Post.ID" />
-            <input type="hidden" asp-for="Post.Title" />
-            <input type="hidden" asp-for="Post.Body" />
-            <input type="hidden" asp-for="Post.Slug" />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Comment.Body" class="control-label"></label>
-                <input asp-for="Comment.Body" class="form-control" />
-                <span asp-validation-for="Comment.Body" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <br>
-                <input type="submit" value="Create" class="btn btn-outline-primary" />
-            </div>
-        </form>
+<br>
+<h3>
+    @Model.Post.Title
+</h3>
+<p>
+    @if (Model.Post.LastEditedon == null)
+    {
+        @Html.DisplayFor(modelItem => Model.Post.PostedOn)
+    }
+    else
+    {
+        @Html.DisplayFor(modelItem => Model.Post.LastEditedon)
+    }
+</p>
+<p>
+    <em>@Html.DisplayFor(modelItem => Model.Post.Body)</em>
+</p>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post">
+                <input type="hidden" asp-for="Post.ID" />
+                <input type="hidden" asp-for="Post.Title" />
+                <input type="hidden" asp-for="Post.Body" />
+                <input type="hidden" asp-for="Post.Slug" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Comment.Body" class="control-label"></label>
+                    <input asp-for="Comment.Body" class="form-control" />
+                    <span asp-validation-for="Comment.Body" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <br>
+                    <input type="submit" value="Create" class="btn btn-outline-primary" />
+                <a asp-page="./Index">
+                    <input type="button" class="btn btn-outline-secondary" value="Cancel" />
+                </a>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-page="Index">Back to Home</a>
-</div>
+    <div>
+        <a asp-page="Index">Back to Home</a>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

@@ -19,7 +19,7 @@ namespace FinalProject.Pages
     {
         private readonly FinalProject.Data.ApplicationDbContext _context;
         private readonly FinalProject.Services.IUserService userService;
-        public const string AvatarFolder = "images/avatars";
+        public const string AvatarFolder = "images/";
         public AddAuthorModel(FinalProject.Data.ApplicationDbContext context, IUserService userService)
         {
             _context = context;

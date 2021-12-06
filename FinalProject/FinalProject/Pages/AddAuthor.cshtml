@@ -18,29 +18,24 @@
                     <span class="form-text" asp-validation-for="FormFile"></span>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <input class="btn btn-primary" type="submit" value="Upload Avatar" />
-                </div>
-            </div>
-
-            <div class="mt-5 row">
-                <img src-"Model.AvatarPath" width="80" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Author.UserName" class="control-label">Public Name</label>
-                <input asp-for="Author.UserName" class="form-control" />
-                <span asp-validation-for="Author.UserName" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Author.Body" class="control-label">Bio</label>
                 <textarea class="form-control" asp-for="Author.Body" rows="5"></textarea>
                 <span asp-validation-for="Author.Body" class="text-danger"></span>
             </div>
+            <div class="row">
+                <div class="col">
+                    <br />
+                    <input class="btn btn-outline-info" type="submit" value="Save" />
+                </div>
+            </div>
+            @*<div class="mt-5 row">
+                <img src-"Model.AvatarPath" width="80" />
+            </div>
             <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-outline-primary" />
-            </div>
+            </div>*@
         </form>
     </div>
 </div>
