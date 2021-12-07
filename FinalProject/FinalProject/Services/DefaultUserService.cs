@@ -32,7 +32,7 @@ namespace FinalProject.Services
 
             return userInfo2;
         }
-
+        public Author Author { get; set; }
         public async Task SaveAvatarAsync(IFormFile formFile, string name)
         {
             var avatarFileName = name + Path.GetExtension(formFile.FileName);
@@ -47,9 +47,23 @@ namespace FinalProject.Services
             stream.Close();
 
             var userlnfo = await GetUserAsync(name);
-            userlnfo.AvatarFileName = avatarFileName; 
 
-            dbContext.Author.Add(userlnfo);
+
+            Author = await dbContext.Author.FirstOrDefaultAsync(m => m.UserName == name);
+            userlnfo.AvatarFileName = avatarFileName;
+            Author.AvatarFileName = userlnfo.AvatarFileName;
+
+            dbContext.Attach(Author).State = EntityState.Modified;
+            try
+            {
+                await dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+                throw;
+
+            }
             await dbContext.SaveChangesAsync();
         }
     }

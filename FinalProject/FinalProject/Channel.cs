@@ -126,11 +126,11 @@ namespace FinalProject
 
         public string? AvatarFileName { get; set; }
 
-        [StringLength(500)]
-        public string? Body { get; set; }
+        [Required]
+        [StringLength(280)]
+        public string Body { get; set; }
 
-        [Required, Display(Name = "Public Name")]
-        [StringLength(30)]
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
 
         public int? VoteTotal { get; set; }

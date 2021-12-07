@@ -11,19 +11,22 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using FinalProject.Services;
+using Microsoft.Extensions.Logging;
 
 namespace FinalProject.Pages
 {
     [Authorize]
     public class AddAuthorModel : PageModel
     {
-        private readonly FinalProject.Data.ApplicationDbContext _context;
+        private readonly FinalProject.Data.ApplicationDbContext dbcontext;
         private readonly FinalProject.Services.IUserService userService;
         public const string AvatarFolder = "images/";
-        public AddAuthorModel(FinalProject.Data.ApplicationDbContext context, IUserService userService)
+        private readonly ILogger<AddAuthorModel> log;
+        public AddAuthorModel(FinalProject.Data.ApplicationDbContext context, IUserService userService, ILogger<AddAuthorModel> log)
         {
-            _context = context;
+            dbcontext = context;
             this.userService = userService;
+            this.log = log;
         }
 
         public async Task OnGet()
@@ -47,12 +50,16 @@ namespace FinalProject.Pages
         public async Task<IActionResult> OnPostAsync()
         {
 
-            await userService.SaveAvatarAsync(FormFile, User.Identity.Name);
-
-            //_context.Author.Add(Author);
-            //await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Setup");
+            Author.UserName = User.Identity.Name;
+            if (ModelState.IsValid)
+            {
+                await dbcontext.Author.AddAsync(Author);
+                await dbcontext.SaveChangesAsync();
+                await userService.SaveAvatarAsync(FormFile, User.Identity.Name);
+                log.LogInformation("Author update/created: {Name}, Avatar file {advatar}", User.Identity.Name, Author.AvatarFileName);
+                return Redirect("./Index");
+            }
+            return Page();
         }
     }
 }
