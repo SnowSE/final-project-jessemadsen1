@@ -111,7 +111,7 @@
             <hr>
             <br>
             <p>@comment.Body</p>
-            <p> <img src="/images/@comment.AvatarFileName" width="30"> @comment.Author    @comment.PostedOn   </p>
+            <p> <img src="/images/@comment.AvatarFileName" width="30"> <a asp-page="Profile">@comment.Author</a>@comment.PostedOn</p>
 
             @if (Model.IsAdmin || User.Identity.Name == @comment.Author)
             {
