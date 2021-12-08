@@ -46,6 +46,8 @@ namespace FinalProject.Pages
             Post = await _dbcontext.Posts
                 .Include(p => p.Comments)
                 .FirstOrDefaultAsync(m => m.Slug.ToLower() == child.ToLower());
+            Author = await _dbcontext.Author
+                 .FirstOrDefaultAsync(m => m.ID == Post.AuthorID);
 
             if (child == null)
             {

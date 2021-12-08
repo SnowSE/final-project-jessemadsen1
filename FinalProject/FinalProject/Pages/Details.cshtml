@@ -5,24 +5,17 @@
 }
 
 
-<div class="col-md-8">
+<div class="col-md-8" >
     <br>
     <h2>
         @Model.Post.Title
     </h2>
     <p>
-        @if (Model.Post.LastEditedon == null)
-        {
-            @Html.DisplayFor(modelItem => Model.Post.PostedOn)
-        }
-        else
-        {
-            @Html.DisplayFor(modelItem => Model.Post.LastEditedon)
-        }
-    </p>
-    <p>
         <em>@Html.DisplayFor(modelItem => Model.Post.Body)</em>
     </p>
+  
+    <p> <img src="/images/@Model.Author.AvatarFileName" width="30"> <a asp-page="Profile">@Model.Author.UserName</a>@Model.Post.PostedOn</p>
+  
     <div>
 
         @if (this.User.Identity.IsAuthenticated && Model.Post.Comments.Count == 0)
@@ -38,15 +31,15 @@
         {
 
             @*<div class="col-md-6 col-sm-12  mb-5">
-                <div>
-                    <a asp-page="./EditPost" asp-route-id="@Model.Post.ID">
-                        <input type="button" class="btn btn-outline-success" value="Edit" />
-                    </a>
-                    <a asp-page="./DeletePost" asp-route-id="@Model.Post.ID">
-                        <input type="button" class="btn btn-outline-danger" value="Delete" />
-                    </a>
-                </div>
-            </div>*@
+                    <div>
+                        <a asp-page="./EditPost" asp-route-id="@Model.Post.ID">
+                            <input type="button" class="btn btn-outline-success" value="Edit" />
+                        </a>
+                        <a asp-page="./DeletePost" asp-route-id="@Model.Post.ID">
+                            <input type="button" class="btn btn-outline-danger" value="Delete" />
+                        </a>
+                    </div>
+                </div>*@
 
         }
 

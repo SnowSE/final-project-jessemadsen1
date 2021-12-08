@@ -34,15 +34,13 @@
 
 </div>
 
-<h5>Posts I have written</h5>
+<h3>Posts I have written</h3>
 
-@foreach (var item in Model.Posts)
+@foreach (var item in Model.PostList)
 {
-
     <div class="col-md-8">
-        <h2>
-            <a asp-page="./Details" asp-route-slug="@item.Topic.Channel.Slug" asp-route-parent="@item.Topic.Slug" asp-route-child="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
-        </h2>
-
+        <h5>
+            <a>@Html.DisplayFor(modelItem => item.Title)</a>
+        </h5>
     </div>
 }
