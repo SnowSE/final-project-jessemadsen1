@@ -5,13 +5,31 @@
 
 <div>
     <h4>Profile for @Model.Author.UserName</h4>
+
+    @if ((User.Identity.Name == Model.Author.UserName) & (@Model.Author.AvatarFileName == null))
+    {
+
+        <div class="col-md-6 col-sm-12  mb-5">
+            <a asp-page="./AddAuthor">
+                <input type="button" class="btn btn-outline-info" value="Setup Avatar/Bio" />
+            </a>
+        </div>
+    }
+    @if ((User.Identity.Name == Model.Author.UserName) & (@Model.Author.AvatarFileName != null))
+    {
+
+        <div class="col-md-6 col-sm-12  mb-5">
+            <a asp-route-id="@Model.Author.ID" asp-page="./EditAuthor">
+                <input type="button" class="btn btn-outline-info" value="Change Avatar/Bio" />
+            </a>
+        </div>
+    }
     <hr />
 
-        <p> <img src="/images/@Model.Author.AvatarFileName" width="70"> </p>
-        <div>
-            <h5>Bio</h5>
-            <p><em>@Html.DisplayFor(modelItem => Model.Author.Body)</em></p>
-        </div>
+    <p> <img src="/images/@Model.Author.AvatarFileName" width="70"> </p>
+    <div>
+        <h5>Bio</h5>
+        <p><em>@Html.DisplayFor(modelItem => Model.Author.Body)</em></p>
+    </div>
 
 </div>
-

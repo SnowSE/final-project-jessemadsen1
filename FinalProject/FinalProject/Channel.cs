@@ -126,18 +126,15 @@ namespace FinalProject
 
         public string? AvatarFileName { get; set; }
 
-        [Required]
         [StringLength(280)]
         public string Body { get; set; }
 
         [Display(Name = "User Name")]
         public string UserName { get; set; }
-
         public int? VoteTotal { get; set; }
-
         public List<Post> Posts { get; set; }
-        public List<Comment> Comments { get; set; }
-
+        public List<Comment> Comments { get; set; } 
+        public DateTime? LastEditedon { get; set; }
 
     }
 

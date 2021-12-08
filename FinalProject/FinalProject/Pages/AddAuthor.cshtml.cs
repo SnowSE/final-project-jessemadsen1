@@ -22,7 +22,7 @@ namespace FinalProject.Pages
         private readonly FinalProject.Services.IUserService userService;
         public const string AvatarFolder = "images/";
         private readonly ILogger<AddAuthorModel> log;
-        public AddAuthorModel(FinalProject.Data.ApplicationDbContext context, IUserService userService, ILogger<AddAuthorModel> log)
+        public AddAuthorModel(ApplicationDbContext context, IUserService userService, ILogger<AddAuthorModel> log)
         {
             dbcontext = context;
             this.userService = userService;
@@ -51,13 +51,14 @@ namespace FinalProject.Pages
         {
 
             Author.UserName = User.Identity.Name;
+            Author.LastEditedon = System.DateTime.Now;
             if (ModelState.IsValid)
             {
                 await dbcontext.Author.AddAsync(Author);
                 await dbcontext.SaveChangesAsync();
                 await userService.SaveAvatarAsync(FormFile, User.Identity.Name);
-                log.LogInformation("Author update/created: {Name}, Avatar file {advatar}", User.Identity.Name, Author.AvatarFileName);
-                return Redirect("./Index");
+                log.LogInformation("Author update/created: {Name}, Avatar file {avatar}", User.Identity.Name, Author.AvatarFileName);
+                return Redirect("./Profile");
             }
             return Page();
         }

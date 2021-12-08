@@ -1,22 +1,31 @@
 ﻿@page
-@model FinalProject.Pages.AddAuthorModel
+@model FinalProject.Pages.EditAuthorModel
 
 
+<div>
+    <h4>Profile for @Model.Author.UserName</h4>
 
-<h4>Hi, @User.Identity.Name</h4>
-<h5>Tell everyone a little about you and choose a cool picture for your Avatar</h5>
+    <p> <img src="/images/@Model.Author.AvatarFileName" width="70"> </p>
+    <div>
+        <h5>Bio</h5>
+        <p><em>@Html.DisplayFor(modelItem => Model.Author.Body)</em></p>
+    </div>
+
+</div>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="Author.UserName" />
+            <input type="hidden" asp-for="Author.ID" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-3 p-2 row">
                 <div class="col-auto text-sm-end align-self-center">
                     <label class="form-label" asp-for="FormFile"></label>
                 </div>
                 <div class="col">
-                    <input class="form-control-file" asp-for="FormFile" type="file">
+                    <input class="form-control-file" asp-for="FormFile" type="file" ;>
                     <span class="form-text" asp-validation-for="FormFile"></span>
                 </div>
             </div>
@@ -29,16 +38,13 @@
                 <div class="col">
                     <br />
                     <input class="btn btn-outline-info" type="submit" value="Save" />
+                    <a asp-page="./Index">
+                        <input type="button" class="btn btn-outline-secondary" value="Cancel" />
+                    </a>
                 </div>
             </div>
-            @*<div class="mt-5 row">
-            <img src-"Model.AvatarPath" width="80" />
-        </div>
-        <br />
-        <div class="form-group">
-            <input type="submit" value="Create" class="btn btn-outline-info" />
-        </div>*@
         </form>
     </div>
 </div>
+
 
