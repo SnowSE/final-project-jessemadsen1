@@ -18,7 +18,7 @@ namespace FinalProject.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set;}
         public DbSet<SubComment> SubComments { get; set; }
-        public DbSet<FinalProject.Author> Author { get; set; }
+        public DbSet<Author> Author { get; set; }
 
     }
 }

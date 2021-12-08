@@ -3,15 +3,17 @@ using System;
 using FinalProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FinalProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211208050559_start13")]
+    partial class start13
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,7 +84,7 @@ namespace FinalProject.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("text");
 
-                    b.Property<int>("AuthorID")
+                    b.Property<int?>("AuthorID")
                         .HasColumnType("integer");
 
                     b.Property<string>("AvatarFileName")
@@ -127,7 +129,7 @@ namespace FinalProject.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("text");
 
-                    b.Property<int>("AuthorID")
+                    b.Property<int?>("AuthorID")
                         .HasColumnType("integer");
 
                     b.Property<string>("Body")
@@ -427,9 +429,7 @@ namespace FinalProject.Migrations
                 {
                     b.HasOne("FinalProject.Author", null)
                         .WithMany("Comments")
-                        .HasForeignKey("AuthorID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorID");
 
                     b.HasOne("FinalProject.Post", "Post")
                         .WithMany("Comments")
@@ -444,9 +444,7 @@ namespace FinalProject.Migrations
                 {
                     b.HasOne("FinalProject.Author", null)
                         .WithMany("Posts")
-                        .HasForeignKey("AuthorID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorID");
 
                     b.HasOne("FinalProject.Topic", "Topic")
                         .WithMany("Posts")

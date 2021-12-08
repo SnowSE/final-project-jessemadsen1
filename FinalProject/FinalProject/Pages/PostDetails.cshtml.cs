@@ -24,7 +24,7 @@ namespace FinalProject.Pages
                 this.authorizationService = authorizationService;
             }
 
-        public IList<Post> Posts { get; set; }
+        //public IList<Post> Posts { get; set; }
 
         [BindProperty]
         public Comment Comment { get; set; }

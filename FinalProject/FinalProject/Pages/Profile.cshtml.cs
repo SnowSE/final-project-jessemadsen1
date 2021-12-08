@@ -23,6 +23,7 @@ namespace FinalProject.Pages
 
         public Author Author { get; set; }
         public bool IsAdmin { get; private set; }
+        //public List<Post> PostList = new List<Post>();
         public async Task<IActionResult> OnGetAsync()
         {
             var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
@@ -39,6 +40,9 @@ namespace FinalProject.Pages
             {
                 return RedirectToPage("./AddAuthor");
             }
+            //PostList =  await _dbContext.Posts
+                  //  .FirstOrDefaultAsync(m => m.AuthorID == Author.ID);
+
             return Page();
         }
     }

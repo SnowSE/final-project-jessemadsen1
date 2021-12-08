@@ -6,6 +6,7 @@ using FinalProject.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace FinalProject.Pages
@@ -26,11 +27,14 @@ namespace FinalProject.Pages
         public Post NewPost { get; set; }
         [BindProperty]
         public Topic Topic { get; set; }
+        public Author Author { get; set; }
         public async Task<IActionResult> OnPostAsync()
         {
             var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
             var currentUserName = claim.Value;
             NewPost.Author = currentUserName;
+            Author = await dbContext.Author.FirstOrDefaultAsync(m => m.UserName == currentUserName);
+            NewPost.AuthorID = Author.ID;
             NewPost.PostedOn = System.DateTime.Now;
             NewPost.TopicId = Topic.ID;
             NewPost.Slug = NewPost.Title.GenerateSlug();

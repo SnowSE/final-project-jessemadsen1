@@ -38,6 +38,7 @@ namespace FinalProject.Pages
             var currentUserName = claim.Value;
             Author = await _dbContext.Author.FirstOrDefaultAsync(m => m.UserName == currentUserName);
             Comment.Author = Author.UserName;
+            Comment.AuthorID = Author.ID;
             Comment.AvatarFileName = Author.AvatarFileName;
             Comment.PostedOn = System.DateTime.Now;
             Comment.PostId = Post.ID;

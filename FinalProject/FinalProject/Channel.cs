@@ -70,6 +70,7 @@ namespace FinalProject
         public string Slug { get; set; }
 
         public string Author { get; set; }
+        public int AuthorID { get; set; }
 
         [Required, Display(Name = "Post")]
         [StringLength(280)]
@@ -96,6 +97,7 @@ namespace FinalProject
         public int ID { get; set; }
 
         public string Author { get; set; }
+        public int AuthorID { get; set; }
         public string? AvatarFileName { get; set; }
 
         [Required]
