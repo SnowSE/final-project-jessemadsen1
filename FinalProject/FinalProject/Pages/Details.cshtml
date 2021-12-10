@@ -5,7 +5,7 @@
 }
 
 
-<div class="col-md-8" >
+<div class="col-md-8">
     <br>
     <h2>
         @Model.Post.Title
@@ -13,12 +13,12 @@
     <p>
         <em>@Html.DisplayFor(modelItem => Model.Post.Body)</em>
     </p>
-  
+
     <p> <img src="/images/@Model.Author.AvatarFileName" width="30"> <a asp-page="Profile">@Model.Author.UserName</a>@Model.Post.PostedOn</p>
-  
+
     <div>
 
-        @if (this.User.Identity.IsAuthenticated && Model.Post.Comments.Count == 0)
+        @*@if (this.User.Identity.IsAuthenticated && Model.Post.Comments.Count == 0)
         {
             <div class="col-md-6 col-sm-12  mb-5">
                 <a asp-page="./AddComment" asp-route-ID="@Model.Post.ID">
@@ -26,7 +26,7 @@
                 </a>
             </div>
 
-        }
+        }*@
         @if (Model.IsAdmin)
         {
 
@@ -43,7 +43,7 @@
 
         }
 
-        @{int i = 0;}
+        @*@{int i = 0;}
         @if (this.User.Identity.IsAuthenticated)
             @foreach (var comment in Model.Post.Comments)
             {
@@ -90,17 +90,13 @@
                     </div>
                 </div>
                 i++;
-            }
+            }*@
 
     </div>
 </div>
 <div class="col-md-8">
-    @foreach (var comment in Model.Post.Comments)
+    @*@foreach (var comment in Model.Post.Comments)
     {
-        @if (@comment.HideComment == false)
-        {
-
-
             <hr>
             <br>
             <p>@comment.Body</p>
@@ -109,23 +105,28 @@
             @if (Model.IsAdmin || User.Identity.Name == @comment.Author)
             {
 
-                    <form method="post">
-                        <div class="col-md-6 col-sm-12  mb-5">
-                            <div>
-                                <a asp-page="./EditComment" asp-route-id="@comment.ID">
-                                    <input type="button" class="btn btn-outline-success" value="Edit" />
-                                </a>
-                                <a asp-page="./DeleteComment" asp-route-id="@comment.ID">
-                                    <input type="button" class="btn btn-outline-danger" value="Delete" />
-                                </a>
-                            </div>
+                <form method="post">
+                    <div class="col-md-6 col-sm-12  mb-5">
+                        <div>
+                            <a asp-page="./EditComment" asp-route-id="@comment.ID">
+                                <input type="button" class="btn btn-outline-success" value="Edit" />
+                            </a>
+                            <a asp-page="./DeleteComment" asp-route-id="@comment.ID">
+                                <input type="button" class="btn btn-outline-danger" value="Delete" />
+                            </a>
                         </div>
-                    </form>
-            }
-        }
+                    </div>
+                </form>
+           }*@ 
     }
 
 </div>
 
 
+@foreach (var Comment in Model.Comments.Where(s => s.ParentCommentId == null))
+{
+    <partial name="DisplayCommentPartial" model="Comment" />
+}
 
+<h3>Add a new top-level Comment</h3>
+<partial name="AddCommentPartial" model="Model.AddCommentModel" />

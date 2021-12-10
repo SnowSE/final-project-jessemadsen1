@@ -105,19 +105,17 @@ namespace FinalProject
         public string Body { get; set; }
 
         [Required]
-        public DateTime PostedOn { get; set; } = DateTime.Now;
+        public DateTime PostedOn { get; set;} = DateTime.Now;
 
-        public DateTime? LastEditedon { get; set; }
-
-        [DisplayName("Topic")]
+        [DisplayName("Post")]
         public int PostId { get; set; }
 
-        public int? Vote { get; set; }
         public Post Post { get; set; }
 
-        public bool HideComment { get; set; }
+        public List<Comment> ChildComment { get; set; }
+        public int? ParentCommentId { get; set; }
+        public Comment ParentComment { get; set; }
 
-        public List<SubComment> SubComments { get; set; }
     }
 
     public class Author
@@ -141,28 +139,6 @@ namespace FinalProject
     }
 
 
-
-
-
-    public class SubComment
-    {
-        [Required]
-        public int ID { get; set; }
-
-        public string Author { get; set; }
-
-        [Required]
-        [StringLength(500)]
-        public string Body { get; set; }
-
-        [Required]
-        public DateTime PostedOn { get; set; } = DateTime.Now;
-        [DisplayName("Topic")]
-        public int CommentId { get; set; }
-        public Comment Comment { get; set; }
-
-        public bool HideSubComment { get; set; }
-    }
 
     //https://stackoverflow.com/questions/2920744/url-slugify-algorithm-in-c
     //https://stackoverflow.com/questions/249087/how-do-i-remove-diacritics-accents-from-a-string-in-net

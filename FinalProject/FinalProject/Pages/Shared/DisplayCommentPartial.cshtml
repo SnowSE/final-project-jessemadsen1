@@ -1,0 +1,23 @@
+﻿@model Comment
+
+<div class="border p-1 pe-0">
+    <div class="row">
+        <div class="col-auto">
+            <strong>@Model.Body</strong>
+        </div>
+        <div class="col-auto">
+            <span>Added on @Model..ToShortDateString()</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            @foreach (var child in Model.ChildComment)
+            {
+                <div class="ms-5">
+                    <partial name="DisplayCommentPartial" model="child" class="ml-3" />
+                </div>
+            }
+        </div>
+        <partial name="AddCommentPartial" model="new AddCommentPartialModel(Model.ID)" />
+    </div>
+</div>

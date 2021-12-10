@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinalProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211208044233_start12")]
-    partial class start12
+    [Migration("20211210052701_start")]
+    partial class start
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -84,7 +84,7 @@ namespace FinalProject.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("text");
 
-                    b.Property<int?>("AuthorID")
+                    b.Property<int>("AuthorID")
                         .HasColumnType("integer");
 
                     b.Property<string>("AvatarFileName")
@@ -95,11 +95,8 @@ namespace FinalProject.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
-                    b.Property<bool>("HideComment")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("LastEditedon")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<int?>("ParentCommentId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("PostId")
                         .HasColumnType("integer");
@@ -107,12 +104,11 @@ namespace FinalProject.Migrations
                     b.Property<DateTime>("PostedOn")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int?>("Vote")
-                        .HasColumnType("integer");
-
                     b.HasKey("ID");
 
                     b.HasIndex("AuthorID");
+
+                    b.HasIndex("ParentCommentId");
 
                     b.HasIndex("PostId");
 
@@ -129,7 +125,7 @@ namespace FinalProject.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("text");
 
-                    b.Property<int?>("AuthorID")
+                    b.Property<int>("AuthorID")
                         .HasColumnType("integer");
 
                     b.Property<string>("Body")
@@ -164,37 +160,6 @@ namespace FinalProject.Migrations
                     b.HasIndex("TopicId");
 
                     b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("FinalProject.SubComment", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Author")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("HideSubComment")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("PostedOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("CommentId");
-
-                    b.ToTable("SubComments");
                 });
 
             modelBuilder.Entity("FinalProject.Topic", b =>
@@ -429,13 +394,21 @@ namespace FinalProject.Migrations
                 {
                     b.HasOne("FinalProject.Author", null)
                         .WithMany("Comments")
-                        .HasForeignKey("AuthorID");
+                        .HasForeignKey("AuthorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FinalProject.Comment", "ParentComment")
+                        .WithMany("ChildComment")
+                        .HasForeignKey("ParentCommentId");
 
                     b.HasOne("FinalProject.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ParentComment");
 
                     b.Navigation("Post");
                 });
@@ -444,7 +417,9 @@ namespace FinalProject.Migrations
                 {
                     b.HasOne("FinalProject.Author", null)
                         .WithMany("Posts")
-                        .HasForeignKey("AuthorID");
+                        .HasForeignKey("AuthorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("FinalProject.Topic", "Topic")
                         .WithMany("Posts")
@@ -453,17 +428,6 @@ namespace FinalProject.Migrations
                         .IsRequired();
 
                     b.Navigation("Topic");
-                });
-
-            modelBuilder.Entity("FinalProject.SubComment", b =>
-                {
-                    b.HasOne("FinalProject.Comment", "Comment")
-                        .WithMany("SubComments")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Comment");
                 });
 
             modelBuilder.Entity("FinalProject.Topic", b =>
@@ -542,7 +506,7 @@ namespace FinalProject.Migrations
 
             modelBuilder.Entity("FinalProject.Comment", b =>
                 {
-                    b.Navigation("SubComments");
+                    b.Navigation("ChildComment");
                 });
 
             modelBuilder.Entity("FinalProject.Post", b =>

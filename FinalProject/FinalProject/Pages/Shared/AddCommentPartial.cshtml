@@ -1,0 +1,13 @@
+﻿@model FinalProject.Pages.Shared.AddCommentPartialModel
+
+<form method="post" asp-page="Details">
+    <div class="row">
+        <div class="col-auto">
+            <input class="form-control mx-3 mt-1" placeholder="add your Comment" asp-for="NewComment.Body" />
+            <input type="hidden" name="ParentCommentId" value="@Model.ParentCommentId" />
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-outline-primary mx-3 mt-1">Add</button>
+        </div>
+    </div>
+</form>

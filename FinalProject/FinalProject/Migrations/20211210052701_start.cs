@@ -53,10 +53,11 @@ namespace FinalProject.Migrations
                 {
                     ID = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Avatar = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Body = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    AvatarFileName = table.Column<string>(type: "text", nullable: true),
+                    Body = table.Column<string>(type: "character varying(280)", maxLength: 280, nullable: true),
                     UserName = table.Column<string>(type: "text", nullable: true),
-                    VoteTotal = table.Column<int>(type: "integer", nullable: true)
+                    VoteTotal = table.Column<int>(type: "integer", nullable: true),
+                    LastEditedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -70,6 +71,7 @@ namespace FinalProject.Migrations
                     ID = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Body = table.Column<string>(type: "character varying(280)", maxLength: 280, nullable: false),
                     Slug = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -190,6 +192,7 @@ namespace FinalProject.Migrations
                     ID = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Body = table.Column<string>(type: "character varying(280)", maxLength: 280, nullable: false),
                     Slug = table.Column<string>(type: "text", nullable: true),
                     ChannelId = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -213,12 +216,12 @@ namespace FinalProject.Migrations
                     Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Slug = table.Column<string>(type: "text", nullable: true),
                     Author = table.Column<string>(type: "text", nullable: true),
+                    AuthorID = table.Column<int>(type: "integer", nullable: false),
                     Body = table.Column<string>(type: "character varying(280)", maxLength: 280, nullable: false),
                     PostedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastEditedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Vote = table.Column<int>(type: "integer", nullable: false),
-                    TopicId = table.Column<int>(type: "integer", nullable: false),
-                    AuthorID = table.Column<int>(type: "integer", nullable: true)
+                    TopicId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -228,7 +231,7 @@ namespace FinalProject.Migrations
                         column: x => x.AuthorID,
                         principalTable: "Author",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Posts_Topics_TopicId",
                         column: x => x.TopicId,
@@ -244,12 +247,12 @@ namespace FinalProject.Migrations
                     ID = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Author = table.Column<string>(type: "text", nullable: true),
-                    Body = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    AuthorID = table.Column<int>(type: "integer", nullable: false),
+                    AvatarFileName = table.Column<string>(type: "text", nullable: true),
+                    Body = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     PostedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     PostId = table.Column<int>(type: "integer", nullable: false),
-                    Vote = table.Column<int>(type: "integer", nullable: true),
-                    HideComment = table.Column<bool>(type: "boolean", nullable: false),
-                    AuthorID = table.Column<int>(type: "integer", nullable: true)
+                    ParentCommentId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -259,34 +262,17 @@ namespace FinalProject.Migrations
                         column: x => x.AuthorID,
                         principalTable: "Author",
                         principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Comments_ParentCommentId",
+                        column: x => x.ParentCommentId,
+                        principalTable: "Comments",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Comments_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SubComments",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Author = table.Column<string>(type: "text", nullable: true),
-                    Body = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    PostedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CommentId = table.Column<int>(type: "integer", nullable: false),
-                    HideSubComment = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubComments", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_SubComments_Comments_CommentId",
-                        column: x => x.CommentId,
-                        principalTable: "Comments",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -334,6 +320,11 @@ namespace FinalProject.Migrations
                 column: "AuthorID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_ParentCommentId",
+                table: "Comments",
+                column: "ParentCommentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Comments_PostId",
                 table: "Comments",
                 column: "PostId");
@@ -347,11 +338,6 @@ namespace FinalProject.Migrations
                 name: "IX_Posts_TopicId",
                 table: "Posts",
                 column: "TopicId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SubComments_CommentId",
-                table: "SubComments",
-                column: "CommentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Topics_ChannelId",
@@ -377,16 +363,13 @@ namespace FinalProject.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "SubComments");
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Posts");

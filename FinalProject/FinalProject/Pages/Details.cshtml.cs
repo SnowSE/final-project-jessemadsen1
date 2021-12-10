@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using FinalProject;
 using FinalProject.Data;
+using FinalProject.Pages.Shared;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
+
 
 namespace FinalProject.Pages
 {
@@ -33,6 +35,9 @@ namespace FinalProject.Pages
         public bool IsAdmin { get; private set; }
 
         public Author Author { get; set; }
+
+        public List<Comment> Comments { get; set; }
+        public AddCommentPartialModel AddCommentModel { get; set; } = new();
         public async Task<IActionResult> OnGetAsync(string child)
         {
             var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
@@ -48,6 +53,10 @@ namespace FinalProject.Pages
                 .FirstOrDefaultAsync(m => m.Slug.ToLower() == child.ToLower());
             Author = await _dbcontext.Author
                  .FirstOrDefaultAsync(m => m.ID == Post.AuthorID);
+
+            Comments = await _dbcontext.Comments
+                    .Include(s => s.ChildComment)
+                    .OrderBy(s => s.PostedOn).ToListAsync();         
 
             if (child == null)
             {
@@ -94,5 +103,12 @@ namespace FinalProject.Pages
 
             return RedirectToPage("./AddComment", Post);
         }
+        public DisplayCommentPartialModel CommentNestedPartialModel(Comment Comment)
+        {
+            var model = new DisplayCommentPartialModel();
+            model.Comment = Comment;
+            return model;
+        }
+
     }
 }
