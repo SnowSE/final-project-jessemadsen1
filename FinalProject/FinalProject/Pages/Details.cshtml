@@ -123,7 +123,7 @@
 </div>
 
 
-@foreach (var Comment in Model.Comments.Where(s => s.ParentCommentId == null))
+@foreach (var Comment in Model.Comments.Where(s => s.ParentCommentId == 0))
 {
     <partial name="DisplayCommentPartial" model="Comment" />
 }

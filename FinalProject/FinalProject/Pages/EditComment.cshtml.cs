@@ -34,7 +34,7 @@ namespace FinalProject.Pages
             }
 
             Comment = await _context.Comments
-                .Include(c => c.Post).FirstOrDefaultAsync(m => m.ID == id);
+                .Include(c => c.PostId).FirstOrDefaultAsync(m => m.ID == id);
             MyGlobalVariables.LastRoute = Request.Headers["Referer"].ToString();
             if (Comment == null)
             {

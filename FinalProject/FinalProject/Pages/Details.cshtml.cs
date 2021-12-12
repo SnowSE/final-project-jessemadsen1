@@ -25,20 +25,18 @@ namespace FinalProject.Pages
             this.authorizationService = authorizationService;
         }
 
-        [BindProperty]
         public Post Post { get; set; }
 
-        [BindProperty]
         public Comment Comment { get; set; }
 
         public bool CanEdit { get; private set; }
         public bool IsAdmin { get; private set; }
 
         public Author Author { get; set; }
-
         public List<Comment> Comments { get; set; }
         public AddCommentPartialModel AddCommentModel { get; set; } = new();
         public async Task<IActionResult> OnGetAsync(string child)
+
         {
             var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
             IsAdmin = authResult.Succeeded;
@@ -56,33 +54,32 @@ namespace FinalProject.Pages
 
             Comments = await _dbcontext.Comments
                     .Include(s => s.ChildComment)
-                    .OrderBy(s => s.PostedOn).ToListAsync();         
+                    .OrderBy(s => s.PostedOn).ToListAsync();
 
-            if (child == null)
-            {
-                return NotFound();
-            }
+
             return Page();
         }
-        public async Task<IActionResult> OnPostAsync(int commentId, string slug)
+        public async Task<IActionResult> OnPostAsync(Comment NewComment, int ParentCommentId, String Child, String Slug)
         {
             var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
             var currentUserName = claim.Value;
             Author = await _dbcontext.Author.FirstOrDefaultAsync(m => m.UserName == currentUserName);
-            Comment.Author = Author.UserName;
-            Comment.AvatarFileName = Author.AvatarFileName;
-            Comment.PostedOn = System.DateTime.Now;
-            Comment.PostId = Post.ID;
+            Post = await _dbcontext.Posts.FirstOrDefaultAsync(m => m.Slug == Child);
+            NewComment.Author = Author.UserName;
+            NewComment.AuthorID = Author.ID;
+            NewComment.AvatarFileName = Author.AvatarFileName;
+            NewComment.PostedOn = System.DateTime.Now;
+            NewComment.PostId = Post.ID;
+            NewComment.ParentCommentId = ParentCommentId;
 
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _dbcontext.Comments.Add(Comment);
+            _dbcontext.Comments.Add(NewComment);
             await _dbcontext.SaveChangesAsync();
-
-            return RedirectToPage(new { slug = slug });
+            return RedirectToPage(new { slug = Slug });
         }
 
         public async Task<IActionResult> OnPostAddComment(string slug)

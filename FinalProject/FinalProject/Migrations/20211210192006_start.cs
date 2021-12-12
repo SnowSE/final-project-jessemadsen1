@@ -249,10 +249,11 @@ namespace FinalProject.Migrations
                     Author = table.Column<string>(type: "text", nullable: true),
                     AuthorID = table.Column<int>(type: "integer", nullable: false),
                     AvatarFileName = table.Column<string>(type: "text", nullable: true),
-                    Body = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    Body = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     PostedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     PostId = table.Column<int>(type: "integer", nullable: false),
-                    ParentCommentId = table.Column<int>(type: "integer", nullable: true)
+                    ParentCommentId = table.Column<int>(type: "integer", nullable: true),
+                    CommentID = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -264,8 +265,8 @@ namespace FinalProject.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Comments_Comments_ParentCommentId",
-                        column: x => x.ParentCommentId,
+                        name: "FK_Comments_Comments_CommentID",
+                        column: x => x.CommentID,
                         principalTable: "Comments",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
@@ -320,9 +321,9 @@ namespace FinalProject.Migrations
                 column: "AuthorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_ParentCommentId",
+                name: "IX_Comments_CommentID",
                 table: "Comments",
-                column: "ParentCommentId");
+                column: "CommentID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_PostId",

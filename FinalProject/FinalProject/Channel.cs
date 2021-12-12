@@ -102,19 +102,15 @@ namespace FinalProject
 
         [Required]
         [StringLength(500)]
-        public string Body { get; set; }
+        public string? Body { get; set; }
 
         [Required]
         public DateTime PostedOn { get; set;} = DateTime.Now;
 
         [DisplayName("Post")]
         public int PostId { get; set; }
-
-        public Post Post { get; set; }
-
         public List<Comment> ChildComment { get; set; }
         public int? ParentCommentId { get; set; }
-        public Comment ParentComment { get; set; }
 
     }
 

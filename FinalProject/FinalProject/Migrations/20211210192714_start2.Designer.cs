@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinalProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211210052701_start")]
-    partial class start
+    [Migration("20211210192714_start2")]
+    partial class start2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,6 +95,9 @@ namespace FinalProject.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
+                    b.Property<int?>("CommentID")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("ParentCommentId")
                         .HasColumnType("integer");
 
@@ -108,7 +111,7 @@ namespace FinalProject.Migrations
 
                     b.HasIndex("AuthorID");
 
-                    b.HasIndex("ParentCommentId");
+                    b.HasIndex("CommentID");
 
                     b.HasIndex("PostId");
 
@@ -398,19 +401,15 @@ namespace FinalProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FinalProject.Comment", "ParentComment")
+                    b.HasOne("FinalProject.Comment", null)
                         .WithMany("ChildComment")
-                        .HasForeignKey("ParentCommentId");
+                        .HasForeignKey("CommentID");
 
-                    b.HasOne("FinalProject.Post", "Post")
+                    b.HasOne("FinalProject.Post", null)
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ParentComment");
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("FinalProject.Post", b =>

@@ -10,5 +10,6 @@ namespace FinalProject.Pages.Shared
         {
         }
         public Comment Comment {get; set;}
+        public Post Post { get; set; }
     }
 }
