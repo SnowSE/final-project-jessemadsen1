@@ -1,24 +1,27 @@
 ﻿@model FinalProject.Pages.Shared.AddCommentPartialModel
 
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <input type="hidden" name="ParentCommentId" value="@Model.ParentCommentId" />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="hidden" asp-for="Post.Body" />
-                <label asp-for="NewComment.Body" class="control-label"></label>
-                <input asp-for="NewComment.Body" class="form-control" />
-                <span asp-validation-for="NewComment.Body" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <br>
-                <input type="submit" value="Create" class="btn btn-outline-info" />
-                <a asp-page="./Index">
-                    <input type="button" class="btn btn-outline-secondary" value="Cancel" />
-                </a>
-            </div>
-        </form>
+@if (this.User.Identity.IsAuthenticated)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post">
+                <input type="hidden" name="ParentCommentId" value="@Model.ParentCommentId" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="Post.Body" />
+                    <label asp-for="NewComment.Body" class="control-label"></label>
+                    <input asp-for="NewComment.Body" class="form-control" />
+                    <span asp-validation-for="NewComment.Body" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <br>
+                    <input type="submit" value="Create" class="btn btn-outline-info" />
+                    <a asp-page="./Index">
+                        <input type="button" class="btn btn-outline-secondary" value="Cancel" />
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
+}

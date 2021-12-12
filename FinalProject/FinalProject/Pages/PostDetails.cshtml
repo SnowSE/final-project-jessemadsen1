@@ -9,7 +9,7 @@
 
 <p><em>@Html.DisplayFor(modelItem => Model.Topic.Body)</em></p>
 
-
+@if (this.User.Identity.IsAuthenticated) { 
 <div>
     <form method="post" asp-page-handler="AddPost" asp-route-slug="@Model.Topic.Slug">
         <div class="col-md-6 col-sm-12  mb-5">
@@ -19,6 +19,7 @@
         </div>
     </form>
 </div>
+}
 
 
 

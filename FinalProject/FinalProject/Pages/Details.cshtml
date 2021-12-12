@@ -19,14 +19,14 @@
     <div>
 
         @*@if (this.User.Identity.IsAuthenticated && Model.Post.Comments.Count == 0)
-        {
-            <div class="col-md-6 col-sm-12  mb-5">
-                <a asp-page="./AddComment" asp-route-ID="@Model.Post.ID">
-                    <input type="button" class="btn btn-outline-info" value="Add Comment" />
-                </a>
-            </div>
+            {
+                <div class="col-md-6 col-sm-12  mb-5">
+                    <a asp-page="./AddComment" asp-route-ID="@Model.Post.ID">
+                        <input type="button" class="btn btn-outline-info" value="Add Comment" />
+                    </a>
+                </div>
 
-        }*@
+            }*@
         @if (Model.IsAdmin)
         {
 
@@ -44,89 +44,99 @@
         }
 
         @*@{int i = 0;}
-        @if (this.User.Identity.IsAuthenticated)
-            @foreach (var comment in Model.Post.Comments)
-            {
-
-                if (i > 0)
+            @if (this.User.Identity.IsAuthenticated)
+                @foreach (var comment in Model.Post.Comments)
                 {
-                    break;
-                }
 
-                <div class="accordion" ID="@("accordion" + comment.ID)">
-                    <div class="accordion-item">
-                        <h6 class="accordion-header" ID="@("heading" + comment.ID)">
-                            <button class="btn btn-outline-info" type="button" data-bs-toggle="collapse" data-bs-target="#@("collapse" + comment.ID)" aria-expanded="false" aria-controls="@("collapse" + comment.ID)">
-                                Add Comment
-                            </button>
-                        </h6>
-                        <div ID="@("collapse" + @comment.ID)" class="accordion-collapse collapse">
-                            <div class="accordion-body">
-                                <form method="post">
-                                    <input type="hidden" name="commentId" value="@comment.ID" />
-                                    <input type="hidden" name="Comment.PostId" value="@Model.Post.ID" />
-                                    <input type="hidden" asp-for="Post.ID" />
-                                    <input type="hidden" asp-for="Post.Title" />
-                                    <input type="hidden" asp-for="Post.Body" />
-                                    <input type="hidden" asp-for="Post.Slug" />
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <form method="post">
-                                                <div class="form-group">
-                                                    <label asp-for="Comment.Body" class="control-label"></label>
-                                                    <input asp-for="Comment.Body" class="form-control" />
-                                                    <span asp-validation-for="Comment.Body" class="text-danger"></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <br>
-                                                    <button type="submit" class="btn btn-outline-info">Add Comment</button>
-                                                </div>
-                                            </form>
+                    if (i > 0)
+                    {
+                        break;
+                    }
+
+                    <div class="accordion" ID="@("accordion" + comment.ID)">
+                        <div class="accordion-item">
+                            <h6 class="accordion-header" ID="@("heading" + comment.ID)">
+                                <button class="btn btn-outline-info" type="button" data-bs-toggle="collapse" data-bs-target="#@("collapse" + comment.ID)" aria-expanded="false" aria-controls="@("collapse" + comment.ID)">
+                                    Add Comment
+                                </button>
+                            </h6>
+                            <div ID="@("collapse" + @comment.ID)" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <form method="post">
+                                        <input type="hidden" name="commentId" value="@comment.ID" />
+                                        <input type="hidden" name="Comment.PostId" value="@Model.Post.ID" />
+                                        <input type="hidden" asp-for="Post.ID" />
+                                        <input type="hidden" asp-for="Post.Title" />
+                                        <input type="hidden" asp-for="Post.Body" />
+                                        <input type="hidden" asp-for="Post.Slug" />
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <form method="post">
+                                                    <div class="form-group">
+                                                        <label asp-for="Comment.Body" class="control-label"></label>
+                                                        <input asp-for="Comment.Body" class="form-control" />
+                                                        <span asp-validation-for="Comment.Body" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <br>
+                                                        <button type="submit" class="btn btn-outline-info">Add Comment</button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                i++;
-            }*@
+                    i++;
+                }*@
 
     </div>
 </div>
 <div class="col-md-8">
     @*@foreach (var comment in Model.Post.Comments)
-    {
-            <hr>
-            <br>
-            <p>@comment.Body</p>
-            <p> <img src="/images/@comment.AvatarFileName" width="30"> <a asp-page="Profile">@comment.Author</a>@comment.PostedOn</p>
+        {
+                <hr>
+                <br>
+                <p>@comment.Body</p>
+                <p> <img src="/images/@comment.AvatarFileName" width="30"> <a asp-page="Profile">@comment.Author</a>@comment.PostedOn</p>
 
-            @if (Model.IsAdmin || User.Identity.Name == @comment.Author)
-            {
+                @if (Model.IsAdmin || User.Identity.Name == @comment.Author)
+                {
 
-                <form method="post">
-                    <div class="col-md-6 col-sm-12  mb-5">
-                        <div>
-                            <a asp-page="./EditComment" asp-route-id="@comment.ID">
-                                <input type="button" class="btn btn-outline-success" value="Edit" />
-                            </a>
-                            <a asp-page="./DeleteComment" asp-route-id="@comment.ID">
-                                <input type="button" class="btn btn-outline-danger" value="Delete" />
-                            </a>
+                    <form method="post">
+                        <div class="col-md-6 col-sm-12  mb-5">
+                            <div>
+                                <a asp-page="./EditComment" asp-route-id="@comment.ID">
+                                    <input type="button" class="btn btn-outline-success" value="Edit" />
+                                </a>
+                                <a asp-page="./DeleteComment" asp-route-id="@comment.ID">
+                                    <input type="button" class="btn btn-outline-danger" value="Delete" />
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </form>
-           }*@ 
-    }
+                    </form>
+               }*@
+
 
 </div>
 
 
-@foreach (var Comment in Model.Comments.Where(s => s.ParentCommentId == 0))
+@foreach (var Comment in Model.Comments.Where(s => s.ParentCommentId == null))
 {
+    <form method="post">
+        @if (Model.Votes.Any(di => di.Author == Comment.Author))
+        {
+        <button class="btn btn-outline-danger" asp-page-handler="Idont" asp-route-commentid="Comment.ID">Idontlikeit</button>
+        }
+        else
+        {
+        <button class="btn btn-outline-success" asp-page-handler="ILikeit" asp-route-commentid="Comment.ID">ILikeit</button>
+        }
+    </form>
     <partial name="DisplayCommentPartial" model="Comment" />
 }
 
-<h3>Add a new top-level Comment</h3>
+<br />
 <partial name="AddCommentPartial" model="Model.AddCommentModel" />

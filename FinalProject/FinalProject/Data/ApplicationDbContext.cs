@@ -19,5 +19,7 @@ namespace FinalProject.Data
         public DbSet<Comment> Comments { get; set;}
         public DbSet<Author> Author { get; set; }
 
+        public DbSet<Vote> Vote { get; set; }
+
     }
 }

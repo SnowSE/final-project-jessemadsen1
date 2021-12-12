@@ -10,7 +10,7 @@ using FinalProject.Data;
 using FinalProject.Pages.Shared;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.Extensions.Logging;
 
 namespace FinalProject.Pages
 {
@@ -18,11 +18,13 @@ namespace FinalProject.Pages
     {
         private readonly FinalProject.Data.ApplicationDbContext _dbcontext;
         private readonly IAuthorizationService authorizationService;
+        private readonly ILogger<DetailsModel> log;
 
-        public DetailsModel(FinalProject.Data.ApplicationDbContext context, IAuthorizationService authorizationService)
+        public DetailsModel(FinalProject.Data.ApplicationDbContext context, IAuthorizationService authorizationService, ILogger<DetailsModel> log)
         {
             _dbcontext = context;
             this.authorizationService = authorizationService;
+            this.log = log;
         }
 
         public Post Post { get; set; }
@@ -34,7 +36,12 @@ namespace FinalProject.Pages
 
         public Author Author { get; set; }
         public List<Comment> Comments { get; set; }
+        [BindProperty]
+        public Vote Vote { get; set; }
         public AddCommentPartialModel AddCommentModel { get; set; } = new();
+
+        public IEnumerable<Vote> Votes { get; set; }
+
         public async Task<IActionResult> OnGetAsync(string child)
 
         {
@@ -53,8 +60,15 @@ namespace FinalProject.Pages
                  .FirstOrDefaultAsync(m => m.ID == Post.AuthorID);
 
             Comments = await _dbcontext.Comments
-                    .Include(s => s.ChildComment)
-                    .OrderBy(s => s.PostedOn).ToListAsync();
+                    .Include( c => c.ChildComment)
+                    .Include(c => c.ChildComment)
+                    .Include(c => c.ChildComment)
+                    .Include(c => c.ChildComment)
+                    .Where(s => s.PostId == Post.ID)
+                    .OrderBy(s => s.PostedOn)
+                    .ToListAsync();
+
+            Votes = await _dbcontext.Vote.ToListAsync();
 
 
             return Page();
@@ -70,7 +84,16 @@ namespace FinalProject.Pages
             NewComment.AvatarFileName = Author.AvatarFileName;
             NewComment.PostedOn = System.DateTime.Now;
             NewComment.PostId = Post.ID;
-            NewComment.ParentCommentId = ParentCommentId;
+
+            if (ParentCommentId == 0)
+            {
+                NewComment.ParentCommentId = null;
+            }
+            else
+            {
+                NewComment.ParentCommentId = ParentCommentId;
+
+            }
 
             if (!ModelState.IsValid)
             {
@@ -79,6 +102,7 @@ namespace FinalProject.Pages
 
             _dbcontext.Comments.Add(NewComment);
             await _dbcontext.SaveChangesAsync();
+            log.LogInformation("Vote added by {Name}", User.Identity.Name);
             return RedirectToPage(new { slug = Slug });
         }
 
@@ -104,7 +128,36 @@ namespace FinalProject.Pages
         {
             var model = new DisplayCommentPartialModel();
             model.Comment = Comment;
+            model.Vote = Vote;
             return model;
+        }
+        public async Task<IActionResult> OnPostIlikeit(int Commentid, String Slug, String Parent, String Child)
+        {
+            var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+            var currentUserName = claim.Value;
+            var Vote2 = await _dbcontext.Vote.FirstOrDefaultAsync();
+            Vote.Author = currentUserName;
+            Vote.CommentId = Commentid;
+            _dbcontext.Vote.Add(Vote);
+            await _dbcontext.SaveChangesAsync();
+
+            return RedirectToPage("./Details", Slug, Parent, Child);
+        }
+
+    public async Task<IActionResult> OnPostIdont(int commentid, String Slug, String Parent, String Child)
+    {
+
+            Vote = await _dbcontext.Vote
+                .FirstOrDefaultAsync(m => (m.CommentId == commentid) && (m.Author == User.Identity.Name));
+
+            if (Vote != null)
+            {
+                _dbcontext.Vote.Remove(Vote);
+                await _dbcontext.SaveChangesAsync();
+                return RedirectToPage("./Details", Slug, Parent ,Child );
+            }
+                return RedirectToPage("./Index");
+
         }
 
     }

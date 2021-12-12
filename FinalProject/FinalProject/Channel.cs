@@ -134,11 +134,21 @@ namespace FinalProject
 
     }
 
+    public class Vote
+    {
+        [Required]
+        public int ID { get; set; }
 
+        public string? Author { get; set; }
 
-    //https://stackoverflow.com/questions/2920744/url-slugify-algorithm-in-c
-    //https://stackoverflow.com/questions/249087/how-do-i-remove-diacritics-accents-from-a-string-in-net
-    public static class Slug
+        public int? PostId { get; set; }
+
+        public int? CommentId { get; set; }
+    }
+
+        //https://stackoverflow.com/questions/2920744/url-slugify-algorithm-in-c
+        //https://stackoverflow.com/questions/249087/how-do-i-remove-diacritics-accents-from-a-string-in-net
+        public static class Slug
     {
         public static string GenerateSlug(this string phrase)
         {
