@@ -40,7 +40,7 @@
 {
     <div class="col-md-8">
         <h5>
-            <a>@Html.DisplayFor(modelItem => item.Title)</a>
+            <a asp-page="./Details"  asp-route-Slug="@item.TopicSlug" asp-route-parent="@item.TopicSlug" asp-route-child="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
         </h5>
     </div>
 }

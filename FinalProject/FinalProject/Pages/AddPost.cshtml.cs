@@ -37,6 +37,7 @@ namespace FinalProject.Pages
             NewPost.AuthorID = Author.ID;
             NewPost.PostedOn = System.DateTime.Now;
             NewPost.TopicId = Topic.ID;
+            NewPost.TopicSlug = Topic.Slug;
             NewPost.Slug = NewPost.Title.GenerateSlug();
             
 

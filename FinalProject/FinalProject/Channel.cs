@@ -87,6 +87,7 @@ namespace FinalProject
 
         public int TopicId { get; set; }
         public Topic Topic { get; set; }
+        public String TopicSlug { get; set; }
 
         public List<Comment> Comments { get; set; }
     }

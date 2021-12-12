@@ -22,6 +22,7 @@ namespace FinalProject.Pages
         }
 
         public Author Author { get; set; }
+        public Topic Topic { get; set; }
         public bool IsAdmin { get; private set; }
         public List<Post> PostList = new List<Post>();
         public async Task<IActionResult> OnGetAsync()
@@ -42,7 +43,26 @@ namespace FinalProject.Pages
             }
             PostList =  await _dbContext.Posts
                    .Where(m => m.AuthorID == Author.ID).ToListAsync();
+
             return Page();
+        }
+
+        public Post Post { get; set; }
+
+        public Channel Channel { get; set; }
+        public async Task<IActionResult> OnPostRedirect(string child)
+        {
+            Post = await _dbContext.Posts
+                .Include(p => p.Comments)
+                .FirstOrDefaultAsync(m => m.Slug.ToLower() == child.ToLower());
+            Topic = await _dbContext.Topics
+                    .FirstOrDefaultAsync(m => m.ID == Post.TopicId);
+            Channel = await _dbContext.Channels
+                    .FirstOrDefaultAsync(m => m.ID == Topic.ChannelId);
+
+
+            return RedirectToPage("./TopicDetails", Channel.Slug);
         }
     }
 }
+
