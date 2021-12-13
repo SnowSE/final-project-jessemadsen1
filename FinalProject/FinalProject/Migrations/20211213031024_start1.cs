@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FinalProject.Migrations
 {
-    public partial class start : Migration
+    public partial class start1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -77,6 +77,21 @@ namespace FinalProject.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Channels", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Vote",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Author = table.Column<string>(type: "text", nullable: true),
+                    PostId = table.Column<int>(type: "integer", nullable: true),
+                    CommentId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Vote", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -221,7 +236,8 @@ namespace FinalProject.Migrations
                     PostedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastEditedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Vote = table.Column<int>(type: "integer", nullable: false),
-                    TopicId = table.Column<int>(type: "integer", nullable: false)
+                    TopicId = table.Column<int>(type: "integer", nullable: false),
+                    TopicSlug = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -365,6 +381,9 @@ namespace FinalProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Vote");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

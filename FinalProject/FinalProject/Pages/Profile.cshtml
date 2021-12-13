@@ -4,8 +4,8 @@
 
 
 <div>
-    <h4>Profile for @Model.Author.UserName</h4>
-    <h4>Score @Model.CountVotes</h4>
+    <h4>@Model.Author.UserName @Model.Author.LastEditedon</h4>
+    <h5>Score @Model.CountVotes   </h5>
 
     @if ((User.Identity.Name == Model.Author.UserName) & (@Model.Author.AvatarFileName == null))
     {

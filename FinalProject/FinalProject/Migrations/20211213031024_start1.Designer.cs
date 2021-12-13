@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinalProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211212053057_start4")]
-    partial class start4
+    [Migration("20211213031024_start1")]
+    partial class start1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -152,6 +152,9 @@ namespace FinalProject.Migrations
 
                     b.Property<int>("TopicId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("TopicSlug")
+                        .HasColumnType("text");
 
                     b.Property<int>("Vote")
                         .HasColumnType("integer");
