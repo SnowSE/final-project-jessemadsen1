@@ -32,8 +32,7 @@ namespace FinalProject.Pages.Shared
             }
 
 
-            Comment = await _dbcontext.Comments
-                .Include(c => c.PostId).FirstOrDefaultAsync(m => m.ID == ID);
+            Comment = await _dbcontext.Comments.FirstOrDefaultAsync(m => m.ID == ID);
 
             if (Comment == null)
             {

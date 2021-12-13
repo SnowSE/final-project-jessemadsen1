@@ -5,13 +5,14 @@
 
 <div>
     <h4>Profile for @Model.Author.UserName</h4>
+    <h4>Score @Model.CountVotes</h4>
 
     @if ((User.Identity.Name == Model.Author.UserName) & (@Model.Author.AvatarFileName == null))
     {
 
         <div class="col-md-6 col-sm-12  mb-5">
             <a asp-page="./AddAuthor">
-                <input type="button" class="btn btn-outline-info" value="Setup Avatar/Bio" />
+                <input type="button" class="btn btn-outline-info btn-sm" value="Setup Avatar/Bio" />
             </a>
         </div>
     }
@@ -20,7 +21,7 @@
 
         <div class="col-md-6 col-sm-12  mb-5">
             <a asp-route-id="@Model.Author.ID" asp-page="./EditAuthor">
-                <input type="button" class="btn btn-outline-info" value="Change Avatar/Bio" />
+                <input type="button" class="btn btn-outline-info btn-sm" value="Change Avatar/Bio" />
             </a>
         </div>
     }
@@ -33,14 +34,33 @@
     </div>
 
 </div>
-
+<br />
 <h3>Posts I have written</h3>
 
 @foreach (var item in Model.PostList)
 {
     <div class="col-md-8">
         <h5>
-            <a asp-page="./Details"  asp-route-Slug="@item.TopicSlug" asp-route-parent="@item.TopicSlug" asp-route-child="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
+            <a asp-page="./Details" asp-route-Slug="@item.TopicSlug" asp-route-parent="@item.TopicSlug" asp-route-child="@item.Slug">@Html.DisplayFor(modelItem => item.Title)</a>
         </h5>
     </div>
+}
+<br />
+<h3>Comments I have written</h3>
+
+@foreach (var item in Model.CommentList)
+{
+<div class="col-md-8">
+    <h5>
+        <a asp-page="./Details" asp-route-Slug="@item.PostId" asp-route-parent="@item.PostId" asp-route-child="@item.PostId">@Html.DisplayFor(modelItem => item.Body)</a>
+    </h5>
+    @if (Model.IsAdmin || User.Identity.Name == item.Author)
+    {
+        <form method="post">
+           <a asp-page="./DeleteComment" asp-route-id="@item.ID">
+           <input type="button" class="btn btn-outline-danger btn-sm" value="Delete" />
+           </a>
+        </form>
+    }
+</div>
 }

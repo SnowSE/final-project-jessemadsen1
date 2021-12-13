@@ -140,12 +140,37 @@ namespace FinalProject.Pages
             Vote.CommentId = Commentid;
             _dbcontext.Vote.Add(Vote);
             await _dbcontext.SaveChangesAsync();
+            return RedirectToPage("./Details", Slug, Parent, Child);
+        }
+
+        public async Task<IActionResult> OnPostIdont(int commentid, String Slug, String Parent, String Child)
+        {
+                Vote = await _dbcontext.Vote
+                    .FirstOrDefaultAsync(m => (m.CommentId == commentid) && (m.Author == User.Identity.Name));
+
+                if (Vote != null)
+                {
+                    _dbcontext.Vote.Remove(Vote);
+                    await _dbcontext.SaveChangesAsync();
+                    return RedirectToPage("./Details", Slug, Parent ,Child );
+                }
+                    return RedirectToPage("./Index");
+         }
+        public async Task<IActionResult> OnPostIlikeitPost(int postid, String Slug, String Parent, String Child)
+        {
+            var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+            var currentUserName = claim.Value;
+            var Vote2 = await _dbcontext.Vote.FirstOrDefaultAsync();
+            Vote.Author = currentUserName;
+            Vote.PostId = postid;
+            _dbcontext.Vote.Add(Vote);
+            await _dbcontext.SaveChangesAsync();
 
             return RedirectToPage("./Details", Slug, Parent, Child);
         }
 
-    public async Task<IActionResult> OnPostIdont(int commentid, String Slug, String Parent, String Child)
-    {
+        public async Task<IActionResult> OnPostIdontPost(int commentid, String Slug, String Parent, String Child)
+        {
 
             Vote = await _dbcontext.Vote
                 .FirstOrDefaultAsync(m => (m.CommentId == commentid) && (m.Author == User.Identity.Name));
@@ -154,11 +179,13 @@ namespace FinalProject.Pages
             {
                 _dbcontext.Vote.Remove(Vote);
                 await _dbcontext.SaveChangesAsync();
-                return RedirectToPage("./Details", Slug, Parent ,Child );
+                return RedirectToPage("./Details", Slug, Parent, Child);
             }
-                return RedirectToPage("./Index");
+            return RedirectToPage("./Index");
 
         }
 
     }
+
+
 }

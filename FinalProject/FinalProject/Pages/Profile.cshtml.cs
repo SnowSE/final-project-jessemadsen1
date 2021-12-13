@@ -25,6 +25,9 @@ namespace FinalProject.Pages
         public Topic Topic { get; set; }
         public bool IsAdmin { get; private set; }
         public List<Post> PostList = new List<Post>();
+        public List<Comment> CommentList = new List<Comment>();
+        public IEnumerable<Vote> Votes { get; set; }
+        public int CountVotes { get; private set; }
         public async Task<IActionResult> OnGetAsync()
         {
             var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
@@ -43,6 +46,15 @@ namespace FinalProject.Pages
             }
             PostList =  await _dbContext.Posts
                    .Where(m => m.AuthorID == Author.ID).ToListAsync();
+
+            CommentList = await _dbContext.Comments
+                    .Where(m => m.AuthorID == Author.ID).ToListAsync();
+
+            Votes = await _dbContext.Vote
+                .Where(v => v.Author == Author.UserName)
+                .ToListAsync();
+
+            CountVotes = Votes.Count();
 
             return Page();
         }

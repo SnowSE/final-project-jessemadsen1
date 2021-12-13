@@ -14,7 +14,7 @@
     <form method="post" asp-page-handler="AddPost" asp-route-slug="@Model.Topic.Slug">
         <div class="col-md-6 col-sm-12  mb-5">
             <div class="col-8">
-                <button type="submit" class="btn btn-outline-info">Add Post</button>
+                <button type="submit" class="btn btn-outline-info btn-sm">Add Post</button>
             </div>
         </div>
     </form>
@@ -39,10 +39,10 @@
         <div class="col-md-6 col-sm-12  mb-5">
             <div>
                 <a asp-page="./EditPost" asp-route-id="@item.ID">
-                    <input type="button" class="btn btn-outline-success" value="Edit" />
+                    <input type="button" class="btn btn-outline-success btn-sm" value="Edit" />
                 </a>
                 <a asp-page="./DeletePost" asp-route-id="@item.ID">
-                    <input type="button" class="btn btn-outline-danger" value="Delete" />
+                    <input type="button" class="btn btn-outline-danger btn-sm" value="Delete" />
                 </a>
             </div>
         </div>

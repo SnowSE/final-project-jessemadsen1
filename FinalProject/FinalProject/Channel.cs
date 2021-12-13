@@ -101,7 +101,7 @@ namespace FinalProject
         public int AuthorID { get; set; }
         public string? AvatarFileName { get; set; }
 
-        [Required]
+        [Required, Display(Name = "Make a comment")]
         [StringLength(500)]
         public string? Body { get; set; }
 
