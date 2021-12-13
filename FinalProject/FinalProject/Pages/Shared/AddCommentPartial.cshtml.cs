@@ -15,14 +15,16 @@ namespace FinalProject.Pages.Shared
         public Post Post { get; set; } = new();
 
         public int ParentCommentId { get; set; }
- 
+
+        public int CommentId { get; set; }
         public AddCommentPartialModel()
         {
 
         }
-        public AddCommentPartialModel(int parentCommentId)
+        public AddCommentPartialModel(int parentCommentId, int commentId)
         {
             ParentCommentId = parentCommentId;
+            CommentId = commentId;
 
         }
     }

@@ -92,7 +92,7 @@ namespace FinalProject.Pages
             else
             {
                 NewComment.ParentCommentId = ParentCommentId;
-
+                NewComment.CommentID = ParentCommentId;
             }
 
             if (!ModelState.IsValid)

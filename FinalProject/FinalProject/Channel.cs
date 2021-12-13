@@ -113,6 +113,8 @@ namespace FinalProject
         public List<Comment> ChildComment { get; set; }
         public int? ParentCommentId { get; set; }
 
+        public int? CommentID { get; set; }
+
     }
 
     public class Author
