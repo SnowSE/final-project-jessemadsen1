@@ -5,28 +5,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
 
-namespace FinalProject.Controller
+namespace FinalProject.Pages
 {
-
     [Route("api/[controller]")]
     [ApiController]
-    public class Users : ControllerBase
+    public class User : ControllerBase
     {
 
         private readonly FinalProject.Data.ApplicationDbContext _dbcontext;
-
-        public Users(FinalProject.Data.ApplicationDbContext context)
+        public Author author { get; set; }
+        public User(FinalProject.Data.ApplicationDbContext context)
         {
             _dbcontext = context;
 
         }
 
         [HttpGet("{id}", Name = "Get")]
-        public async Task<Author> GetAsync(int id)
+        public async Task<string> GetAsync(int id)
         {
-            var Author = await _dbcontext.Author.FirstOrDefaultAsync(m => m.ID == id);
-            return Author;
+            author = await _dbcontext.Author.FirstOrDefaultAsync(m => m.ID == id);
+
+            return JsonSerializer.Serialize(author);
+
         }
     }
 }

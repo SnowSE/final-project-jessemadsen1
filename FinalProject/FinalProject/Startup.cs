@@ -48,10 +48,10 @@ namespace FinalProject
 
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddControllers();
             services.AddRazorPages();
 
             services.AddTransient<IUserService, DefaultUserService>();
-            services.AddControllers();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(AuthPolicies.IsAdmin, (policyBuilder) =>
@@ -84,8 +84,8 @@ namespace FinalProject
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapRazorPages();
             });
 
         }
