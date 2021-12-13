@@ -15,6 +15,7 @@
     </p>
 
     <p> <img src="/images/@Model.Author.AvatarFileName" width="30"> <a asp-page="Profile">@Model.Author.UserName</a>@Model.Post.PostedOn</p>
+    <h5>Score @Model.CountVotes   </h5>
 
     <form method="post">
         <input type="hidden" asp-for="Vote.PostId" />
@@ -141,8 +142,8 @@
     <partial name="DisplayCommentPartial" model="Comment" />
     <br />
     <form method="post">
-        <input type="hidden" asp-for="Vote.PostId" />
-        @if (Model.Votes.Any(di => (di.Author == Comment.Author)))
+        <input type="hidden" name="CommentID" value="@Comment.ID" />
+        @if (Model.Votes.Any(di => (di.Author == Comment.Author) && (di.CommentId == Comment.ID)))
         {
             <button class="btn btn-outline-danger btn-sm" asp-page-handler="Idont" asp-route-commentid="Comment.ID">Idontlikeit</button>
         }

@@ -28,7 +28,6 @@ namespace FinalProject.Pages
         }
 
         public Post Post { get; set; }
-
         public Comment Comment { get; set; }
 
         public bool CanEdit { get; private set; }
@@ -41,7 +40,8 @@ namespace FinalProject.Pages
         public AddCommentPartialModel AddCommentModel { get; set; } = new();
 
         public IEnumerable<Vote> Votes { get; set; }
-
+        public IEnumerable<Vote> VotesC { get; set; }
+        public int CountVotes { get; private set; }
         public async Task<IActionResult> OnGetAsync(string child)
 
         {
@@ -69,7 +69,11 @@ namespace FinalProject.Pages
                     .ToListAsync();
 
             Votes = await _dbcontext.Vote.ToListAsync();
+            VotesC = await _dbcontext.Vote
+                            .Where(v => v.ID == Post.ID)
+                            .ToListAsync();
 
+            CountVotes = Votes.Count();
 
             return Page();
         }
@@ -131,22 +135,22 @@ namespace FinalProject.Pages
             model.Vote = Vote;
             return model;
         }
-        public async Task<IActionResult> OnPostIlikeit(int Commentid, String Slug, String Parent, String Child)
+        public async Task<IActionResult> OnPostIlikeit(int CommentID, String Slug, String Parent, String Child)
         {
             var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
             var currentUserName = claim.Value;
             var Vote2 = await _dbcontext.Vote.FirstOrDefaultAsync();
             Vote.Author = currentUserName;
-            Vote.CommentId = Commentid;
+            Vote.CommentId = CommentID;
             _dbcontext.Vote.Add(Vote);
             await _dbcontext.SaveChangesAsync();
             return RedirectToPage("./Details", Slug, Parent, Child);
         }
 
-        public async Task<IActionResult> OnPostIdont(int commentid, String Slug, String Parent, String Child)
+        public async Task<IActionResult> OnPostIdont(int CommentID, String Slug, String Parent, String Child)
         {
                 Vote = await _dbcontext.Vote
-                    .FirstOrDefaultAsync(m => (m.CommentId == commentid) && (m.Author == User.Identity.Name));
+                    .FirstOrDefaultAsync(m => (m.CommentId == CommentID) && (m.Author == User.Identity.Name));
 
                 if (Vote != null)
                 {
@@ -169,11 +173,11 @@ namespace FinalProject.Pages
             return RedirectToPage("./Details", Slug, Parent, Child);
         }
 
-        public async Task<IActionResult> OnPostIdontPost(int commentid, String Slug, String Parent, String Child)
+        public async Task<IActionResult> OnPostIdontPost(int postid, String Slug, String Parent, String Child)
         {
 
             Vote = await _dbcontext.Vote
-                .FirstOrDefaultAsync(m => (m.CommentId == commentid) && (m.Author == User.Identity.Name));
+                .FirstOrDefaultAsync(m => (m.PostId == postid) && (m.Author == User.Identity.Name));
 
             if (Vote != null)
             {
