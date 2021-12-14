@@ -41,6 +41,9 @@ namespace FinalProject.Pages
 
         public IEnumerable<Vote> Votes { get; set; }
         public IEnumerable<Vote> VotesC { get; set; }
+
+        public List<String> VotestLeaders { get; set; }
+
         public int CountVotes { get; private set; }
         public async Task<IActionResult> OnGetAsync(string child)
 
@@ -73,6 +76,9 @@ namespace FinalProject.Pages
                             .Where(v => v.ID == Post.ID)
                             .ToListAsync();
 
+            //var authors =  _dbcontext.Author.Select(p => new { p.UserName, p.VoteTotal });
+
+            //VotestLeaders = (List<string>)authors;
             CountVotes = Votes.Count();
 
             return Page();

@@ -55,6 +55,31 @@ namespace FinalProject.Pages
                 .ToListAsync();
 
             CountVotes = Votes.Count();
+            Author.VoteTotal = CountVotes;
+
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            _dbContext.Attach(Author).State = EntityState.Modified;
+
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AuthorExists(Author.ID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return Page();
         }
@@ -75,6 +100,10 @@ namespace FinalProject.Pages
 
             return RedirectToPage("./TopicDetails", Channel.Slug);
         }
-    }
+         private bool AuthorExists(int id)
+         {
+             return _dbContext.Author.Any(e => e.ID == id);
+         }
 }
+    }
 

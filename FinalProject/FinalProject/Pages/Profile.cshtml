@@ -52,7 +52,7 @@
 {
 <div class="col-md-8">
     <h5>
-        <a asp-page="./Details" asp-route-Slug="@item.PostId" asp-route-parent="@item.PostId" asp-route-child="@item.PostId">@Html.DisplayFor(modelItem => item.Body)</a>
+        <a asp-page="./Details"  asp-route-parent="@item.PostId" asp-route-child="@item.PostId">@Html.DisplayFor(modelItem => item.Body)</a>
     </h5>
     @if (Model.IsAdmin || User.Identity.Name == item.Author)
     {

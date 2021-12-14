@@ -12,8 +12,8 @@ using Microsoft.Extensions.Logging;
 
 namespace FinalProject.Pages
 {
-
-   public class EditPostModel : PageModel
+    [Authorize]
+    public class EditPostModel : PageModel
    {
        private readonly ApplicationDbContext dbContext;
        private readonly ILogger<EditPostModel> log;
@@ -27,7 +27,7 @@ namespace FinalProject.Pages
        public Post Post { get; set; }
 
        public Topic Topic { get; set; }
-
+       public Author Author { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? ID)
        {
@@ -49,7 +49,9 @@ namespace FinalProject.Pages
        {
             var claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
             var currentUserName = claim.Value;
+            Author = await dbContext.Author.FirstOrDefaultAsync(m => m.UserName == currentUserName);
             Post.Author = currentUserName;
+            Post.AuthorID = Author.ID;
             Post.PostedOn = System.DateTime.Now;
             Post.Slug = Post.Title.GenerateSlug();
 
