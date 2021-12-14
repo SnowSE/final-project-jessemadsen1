@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProject.Pages
 {
+    [Authorize]
     public class ProfileModel : PageModel
     {
         private readonly FinalProject.Data.ApplicationDbContext _dbContext;
@@ -28,7 +29,7 @@ namespace FinalProject.Pages
         public List<Comment> CommentList = new List<Comment>();
         public IEnumerable<Vote> Votes { get; set; }
         public int CountVotes { get; private set; }
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string profileName)
         {
             var authResult = await authorizationService.AuthorizeAsync(User, AuthPolicies.IsAdmin);
             IsAdmin = authResult.Succeeded;
@@ -38,7 +39,7 @@ namespace FinalProject.Pages
                 return NotFound();
             }
 
-            Author = await _dbContext.Author.FirstOrDefaultAsync(m => m.UserName == User.Identity.Name);
+            Author = await _dbContext.Author.FirstOrDefaultAsync(m => m.UserName == profileName);
 
             if (Author == null)
             {

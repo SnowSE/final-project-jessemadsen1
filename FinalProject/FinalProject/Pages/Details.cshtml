@@ -14,7 +14,7 @@
         <em>@Html.DisplayFor(modelItem => Model.Post.Body)</em>
     </p>
 
-    <p> <img src="/images/@Model.Author.AvatarFileName" width="30"> <a asp-page="Profile">@Model.Author.UserName</a>@Model.Post.PostedOn</p>
+    <p> <img src="/images/@Model.Author.AvatarFileName" width="30"> <a asp-page="Profile" asp-route-profileName="@Model.Author.UserName">@Model.Author.UserName</a>@Model.Post.PostedOn</p>
     <h5>Score @Model.CountVotes   </h5>
 
     <form method="post">
@@ -25,9 +25,11 @@
         }
         else
         {
+           
             <button class="btn btn-outline-success btn-sm" asp-page-handler="ILikeitPost" asp-route-postid="@Model.Post.ID">ILikeit</button>
         }
     </form>
+     
 
     <div>
 
@@ -138,6 +140,15 @@
 
 @foreach (var Comment in Model.Comments.Where(s => s.ParentCommentId == null))
 {
+    @if (Model.IsAdmin)
+    {
+        <form method="post">
+            <a asp-page="./DeleteComment" asp-route-id="@Comment.ID">
+                <input type="button" class="btn btn-outline-danger btn-sm" value="Delete" />
+            </a>
+        </form>
+    }
+
     <br />
     <partial name="DisplayCommentPartial" model="Comment" />
     <br />
