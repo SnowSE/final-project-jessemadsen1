@@ -36,10 +36,16 @@ namespace FinalProject.Pages
 
             if (User.Identity.Name == null)
             {
-                return NotFound();
+                return RedirectToPage("./Index");
             }
-
+            if (profileName == null)
+            {
+            Author = await _dbContext.Author.FirstOrDefaultAsync(m => m.UserName == User.Identity.Name);
+            }
+            else
+            {
             Author = await _dbContext.Author.FirstOrDefaultAsync(m => m.UserName == profileName);
+            }
 
             if (Author == null)
             {
